@@ -16,34 +16,43 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import 'bootstrap';
-require ('bootstrap/dist/css/bootstrap.min.css');
+import {Dao} from './dao.js';
+import {Template} from './template.js';
+import {mainTemplate} from './htmlTemplates.js';
+import {Filter, Filters} from './filters.js';
 
-var app = {
-    // Application Constructor
-    initialize: function() {
-        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-    },
+import '../www/libs/jquery.min.js';
 
-    // deviceready Event Handler
-    //
-    // Bind any cordova events here. Common events are:
-    // 'pause', 'resume', etc.
-    onDeviceReady: function() {
-        this.receivedEvent('deviceready');
-    },
+'cordova' in window ? document.addEventListener("deviceready", init, false) : init();
 
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+function init() {
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+  const mainElement = document.getElementById('mainScreen');
 
-        console.log('Received Event: ' + id);
-    }
-};
+  const myDao = new Dao();
+  const myJson = myDao.getData();
 
-app.initialize();
+  const myTemplate = new Template(mainTemplate, mainElement, null);
+  const users = JSON.parse(myJson);
+
+  const myFilter = new Filter("Recorrido", "Todos");
+
+  const usersList = document.getElementById("usersList");
+  myTemplate.fillUsersList(usersList, users);
+
+  //Listeners
+  $("#findUser").on("keyup", Filters.filterUserByName);
+
+  $('#orderButtons button').click(function() {
+    $(this).addClass('active').siblings().removeClass('active');
+    myFilter.order = $(this).text();
+    const usersOrdered = myFilter.filterByOptions(users);
+    myTemplate.fillUsersList(usersList, usersOrdered);
+  });
+
+  $('#sector').change(function() {
+    myFilter.sector = $("#sector").val();
+    const usersOrdered = myFilter.filterByOptions(users);
+    myTemplate.fillUsersList(usersList, usersOrdered);
+  })
+}
