@@ -17,42 +17,20 @@
  * under the License.
  */
 import {Dao} from './dao.js';
-import {Template} from './template.js';
-import {mainTemplate} from './htmlTemplates.js';
-import {Filter, Filters} from './filters.js';
+import { MainTemplate } from './mainTemplate.js';
 
 import '../www/libs/jquery.min.js';
 
 'cordova' in window ? document.addEventListener("deviceready", init, false) : init();
 
 function init() {
-
   const mainElement = document.getElementById('mainScreen');
 
   const myDao = new Dao();
-  const myJson = myDao.getData();
 
-  const myTemplate = new Template(mainTemplate, mainElement, null);
-  const users = JSON.parse(myJson);
-
-  const myFilter = new Filter("Recorrido", "Todos");
-
-  const usersList = document.getElementById("usersList");
-  myTemplate.fillUsersList(usersList, users);
-
-  //Listeners
-  $("#findUser").on("keyup", Filters.filterUserByName);
-
-  $('#orderButtons button').click(function() {
-    $(this).addClass('active').siblings().removeClass('active');
-    myFilter.order = $(this).text();
-    const usersOrdered = myFilter.filterByOptions(users);
-    myTemplate.fillUsersList(usersList, usersOrdered);
-  });
-
-  $('#sector').change(function() {
-    myFilter.sector = $("#sector").val();
-    const usersOrdered = myFilter.filterByOptions(users);
-    myTemplate.fillUsersList(usersList, usersOrdered);
-  })
+  const mainTemplate = new MainTemplate("Recorrido", "Todos", myDao);
+  mainElement.innerHTML = mainTemplate.getHtmlTemplate();
+  const usersList = document.getElementById(mainTemplate.getUsersListElement());
+  mainTemplate.fillUsersList(usersList);
+  mainTemplate.setListeners();
 }

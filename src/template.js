@@ -4,13 +4,18 @@ export class Template {
         this._html = html;
         this._element = element;
         this._data = data;
-        element.innerHTML = this._html;
+        this._element.innerHTML = html;
     }
 
     changeTemplate(html, data) {
-        this._html = html;
         this._data = data;
-        element.innerHTML = this._html;
+        this._element.innerHTML = html;
+        console.log(this._element);
+    }
+
+    get html() {
+        this._html;
+        console.log(this._html);
     }
 
     fillUsersList(element, users) {
