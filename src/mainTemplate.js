@@ -36,7 +36,7 @@ export class MainTemplate {
   set users(newUsers) {
     this._users = newUsers;
   }
-  
+
   getUsersListElement() {
     return "usersList";
   }
@@ -118,7 +118,7 @@ export class MainTemplate {
   }
 
   _callReadingTemplateListener() {
-    $('#usersList li').on('touchstart', event => {
+    $('#usersList li').on('click', event => {
       new ReadingTemplate(this, event.target.id);
     });
   }
