@@ -86,7 +86,7 @@ export const readingsTemplate = `
 </div>
 <div class="form-group">
 <label class="font-weight-bold col-form-label-lg" for="exampleFormControlTextarea1">Lectura</label>
-<input type="number" class="form-control form-control-lg text-right" autofocus>
+<input id="lectura" type="number" class="form-control form-control-lg text-right" autofocus>
 </div>
 </form>
 </div>
@@ -99,7 +99,7 @@ export const readingsTemplate = `
 <label>Lectura anterior:</label>
 </div>
 <div class="col-2">
-<label>25</label>
+<label id="lectura_anterior"></label>
 </div>
 </div>
 
