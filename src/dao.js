@@ -1,7 +1,4 @@
 export class Dao {
-    constructor(file) {
-        this._file = file;
-    }
 
     getData() {
         if (window.localStorage.getItem('dataJson') == null) {

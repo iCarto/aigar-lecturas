@@ -26,8 +26,8 @@ import '../www/libs/jquery.min.js';
 function init() {
   const mainElement = document.getElementById('mainScreen');
 
-  const myDao = new Dao();
-  const users = JSON.parse(myDao.getData());
+  const dao = new Dao();
+  const users = JSON.parse(dao.getData());
 
   const mainTemplate = new MainTemplate("Recorrido", "Todos", users);
   const usersList = document.getElementById(mainTemplate.getUsersListElement());
