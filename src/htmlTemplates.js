@@ -108,7 +108,7 @@ export const readingsTemplate = `
 <label>Consumo calculado:</label>
 </div>
 <div class="col-2">
-<label>--</label>
+<label id="consumo_calculado">--</label>
 </div>
 </div>
 
@@ -117,7 +117,7 @@ export const readingsTemplate = `
 <label>Tarifa aproximada:</label>
 </div>
 <div class="col-2">
-<label>--</label>
+<label id="tarifa">--</label>
 </div>
 </div>
 
