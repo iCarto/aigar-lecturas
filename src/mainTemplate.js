@@ -37,10 +37,6 @@ export class MainTemplate {
     this._users = newUsers;
   }
   
-  getHtmlTemplate() {
-    return usersListTemplate;
-  }
-  
   getUsersListElement() {
     return "usersList";
   }

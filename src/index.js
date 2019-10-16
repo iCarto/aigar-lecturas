@@ -30,7 +30,6 @@ function init() {
   const users = JSON.parse(myDao.getData());
 
   const mainTemplate = new MainTemplate("Recorrido", "Todos", users);
-  // mainElement.innerHTML = mainTemplate.getHtmlTemplate();
   const usersList = document.getElementById(mainTemplate.getUsersListElement());
   mainTemplate.fillUsersList(usersList);
   mainTemplate.setListeners();
