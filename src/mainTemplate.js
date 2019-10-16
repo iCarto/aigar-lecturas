@@ -1,11 +1,16 @@
 import {usersListTemplate} from './htmlTemplates.js';
+import {ReadingTemplate} from './readingTemplate.js';
 
 export class MainTemplate {
-  constructor(order, sector, dao) {
+  constructor(order, sector, users) {
     this._order = order;
     this._sector = sector;
-    this._dao = dao;
-    this._users = JSON.parse(dao.getData());  
+    this._initialUsers = users;
+    this._users = users;
+
+    document.getElementById('mainScreen').innerHTML = usersListTemplate;
+    this._initializeWidgets();
+    this._initializeUsersListByFilters();
   }
   
   get order() {
@@ -48,13 +53,17 @@ export class MainTemplate {
       this._order = $(event.target).text();
       this._users = this._filterByOptions();
       this.fillUsersList(document.getElementById(this.getUsersListElement()));
+      this._callReadingTemplateListener();
     });
 
     $('#sector').on('change', () => {
       this._sector = $("#sector").val();
       this._users = this._filterByOptions();
       this.fillUsersList(document.getElementById(this.getUsersListElement()));
-  })
+      this._callReadingTemplateListener();
+    });
+
+    this._callReadingTemplateListener();
   }
   
   fillUsersList(element) {
@@ -66,12 +75,23 @@ export class MainTemplate {
       
       documentFragment.appendChild(li);
       var userName = document.createElement("h4");
+      userName.setAttribute("id", this._users[i]['id']);
       userName.textContent = this._users[i]["name"];
       li.appendChild(userName);
       li.appendChild(document.createTextNode("Nº socio:" + this._users[i]['num_socio']));
       li.classList.add("list-group-item");
       element.appendChild(li); 
     }
+  }
+
+  _initializeWidgets() {
+    document.getElementById(this._order).classList.add('active');
+    $('#sector').val(this._sector);
+  }
+
+  _initializeUsersListByFilters() {
+    this._users = this._filterByOptions();
+    this.fillUsersList(document.getElementById(this.getUsersListElement()));
   }
   
   _filterUserByName() {
@@ -82,7 +102,7 @@ export class MainTemplate {
   }
   
   _filterByOptions() {
-    this._users = JSON.parse(this._dao.getData());
+    this._users = this._initialUsers;
     if (this._order === "Alfabético") {
       this._users.sort(function(a, b){
         return a.name.localeCompare(b.name);
@@ -99,6 +119,12 @@ export class MainTemplate {
       return this._users.filter(user => user.sector === parseInt(this._sector));
     }
     
+  }
+
+  _callReadingTemplateListener() {
+    $('#usersList li').on('touchstart', event => {
+      new ReadingTemplate(this, event.target.id);
+    });
   }
        
 }

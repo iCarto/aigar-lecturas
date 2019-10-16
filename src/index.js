@@ -27,9 +27,10 @@ function init() {
   const mainElement = document.getElementById('mainScreen');
 
   const myDao = new Dao();
+  const users = JSON.parse(myDao.getData());
 
-  const mainTemplate = new MainTemplate("Recorrido", "Todos", myDao);
-  mainElement.innerHTML = mainTemplate.getHtmlTemplate();
+  const mainTemplate = new MainTemplate("Recorrido", "Todos", users);
+  // mainElement.innerHTML = mainTemplate.getHtmlTemplate();
   const usersList = document.getElementById(mainTemplate.getUsersListElement());
   mainTemplate.fillUsersList(usersList);
   mainTemplate.setListeners();

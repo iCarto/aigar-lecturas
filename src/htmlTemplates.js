@@ -14,8 +14,8 @@ export const usersListTemplate = `
 <h6>Orden:</h6>
 </div>
 <div id="orderButtons" class="col-12 btn-group btn-group-toggle">
-<button type="button" class="btn btn-primary active">Recorrido</button>
-<button type="button" class="btn btn-primary">Alfabético</button>
+<button id="Recorrido" type="button" class="btn btn-primary">Recorrido</button>
+<button id="Alfabético" type="button" class="btn btn-primary">Alfabético</button>
 </div>
 </div>
 
@@ -25,14 +25,14 @@ export const usersListTemplate = `
 <div class="col-12 form-group">
 <h6>Sector:</h6>
 <select class="form-control" id="sector">
-<option>Todos</option>
-<option>1</option>
-<option>2</option>
-<option>3</option>
-<option>4</option>
-<option>5</option>
-<option>6</option>
-<option>7</option>
+<option value="Todos">Todos</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
 </select>
 </div>
 </div>
