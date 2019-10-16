@@ -45,7 +45,7 @@ export class ReadingTemplate {
             }
         }
         this._mainTemplate._initialUsers = users;
-        const dao = new Dao(null);
+        const dao = new Dao();
         const dataJson = JSON.stringify(users);
         dao.setData(dataJson);
 
