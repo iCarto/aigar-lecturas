@@ -117,7 +117,7 @@ export const readingsTemplate = `
 <label>Tarifa aproximada:</label>
 </div>
 <div class="col-2">
-<label id="tarifa">--</label>
+<label id="tarifa_calculada">--</label>
 </div>
 </div>
 

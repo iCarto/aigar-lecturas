@@ -37,14 +37,18 @@ export class ReadingTemplate {
         document.getElementById('lectura_anterior').innerHTML = user[0]['lectura_anterior'];
         document.getElementById('lectura').value = user[0]['lectura'];
         document.getElementById('consumo_calculado').innerHTML = user[0]['consumo_calculado'];
+        document.getElementById('tarifa_calculada').innerHTML = user[0]['tarifa_calculada'];
     }
 
     _setNewReading() {
+        const tarifa = 3.14;
+
         const users = this._mainTemplate._initialUsers;
         for (var i=0; i<users.length; i++) {
             if (users[i]['id'] === parseInt(this._id)) {
                 users[i]['lectura'] = parseInt(document.getElementById('lectura').value);
                 users[i]['consumo_calculado'] = parseInt(this._calculateConsumo());
+                users[i]['tarifa_calculada'] = parseInt(this._calculateConsumo()) * tarifa;
             }
         }
         this._mainTemplate._initialUsers = users;
@@ -53,6 +57,7 @@ export class ReadingTemplate {
         dao.setData(dataJson);
 
         document.getElementById('consumo_calculado').innerHTML = this._calculateConsumo();
+        document.getElementById('tarifa_calculada').innerHTML = this._calculateConsumo() * tarifa;
         
     }
 
@@ -65,7 +70,6 @@ export class ReadingTemplate {
         const input = document.getElementById("contadorTextField");
         const button = document.getElementById("contadorButton");
         if (button.innerText === 'Cambiar') {
-            console.log("button:" + event.target.textcontent);
              button.innerText = 'Guardar';
             input.removeAttribute("readonly");
             input.focus();
