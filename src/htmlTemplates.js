@@ -78,9 +78,9 @@ export const readingsTemplate = `
 <div class="form-group">
 <label for="">Número contador</label>
 <div class="input-group mb-3">
-<input type="text" class="form-control" aria-describedby="button-addon2" readonly>
+<input id="contadorTextField" type="number" class="form-control" readonly>
 <div class="input-group-append">
-<button class="btn btn-outline-primary" type="button" id="button-addon2">Cambiar</button>
+<button class="btn btn-outline-primary" type="button" id="contadorButton">Cambiar</button>
 </div>
 </div>
 </div>

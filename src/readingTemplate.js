@@ -21,7 +21,9 @@ export class ReadingTemplate {
             mainTemplate.setListeners();  
         }, false);
 
-        $('#lectura'). on('keyup', () => this._setNewReading());
+        $('#lectura').on('keyup', () => this._setNewReading());
+
+        $('#contadorButton').on('click', () => this._changeMeterNumber());
     }
 
     _getUserFromID() {
@@ -31,6 +33,7 @@ export class ReadingTemplate {
     _addUserDataToTemplate() {
         const user = this._getUserFromID();
         document.getElementById('name').innerHTML = '<h4>'+user[0]['name']+'</h4>';
+        document.getElementById('contadorTextField').value = user[0]['num_contador'];
         document.getElementById('lectura_anterior').innerHTML = user[0]['lectura_anterior'];
         document.getElementById('lectura').value = user[0]['lectura'];
         document.getElementById('consumo_calculado').innerHTML = user[0]['consumo_calculado'];
@@ -58,5 +61,29 @@ export class ReadingTemplate {
             parseInt(document.getElementById('lectura_anterior').innerHTML);
     }
 
+    _changeMeterNumber() {
+        const input = document.getElementById("contadorTextField");
+        const button = document.getElementById("contadorButton");
+        if (button.innerText === 'Cambiar') {
+            console.log("button:" + event.target.textcontent);
+             button.innerText = 'Guardar';
+            input.removeAttribute("readonly");
+            input.focus();
+        }else if (button.innerText === 'Guardar'){
+            const users = this._mainTemplate._initialUsers;
+            for (var i=0; i<users.length; i++) {
+                if (users[i]['id'] === parseInt(this._id)) {
+                    users[i]['num_contador'] = parseInt(document.getElementById('contadorTextField').value);
+                }
+            }
+            this._mainTemplate._initialUsers = users;
+            const dao = new Dao();
+            const dataJson = JSON.stringify(users);
+            dao.setData(dataJson);
+            button.innerText = 'Cambiar';
+            input.readOnly = true;
+        }
+        
+    }
 
 }
