@@ -41,24 +41,23 @@ export class ReadingTemplate {
     }
 
     _setNewReading() {
-        const tarifa = 3.14;
+        const dao = new Dao();
 
         const users = this._mainTemplate._initialUsers;
         for (var i=0; i<users.length; i++) {
             if (users[i]['id'] === parseInt(this._id)) {
                 users[i]['lectura'] = parseInt(document.getElementById('lectura').value);
                 users[i]['consumo_calculado'] = parseInt(this._calculateConsumo());
-                users[i]['tarifa_calculada'] = parseInt(this._calculateConsumo()) * tarifa;
+                users[i]['tarifa_calculada'] = parseInt(this._calculateConsumo()) * parseFloat(dao.getTarifa());
             }
         }
         this._mainTemplate._initialUsers = users;
-        const dao = new Dao();
+        
         const dataJson = JSON.stringify(users);
         dao.setData(dataJson);
 
         document.getElementById('consumo_calculado').innerHTML = this._calculateConsumo();
-        document.getElementById('tarifa_calculada').innerHTML = this._calculateConsumo() * tarifa;
-        
+        document.getElementById('tarifa_calculada').innerHTML = this._calculateConsumo() * parseFloat(dao.getTarifa());   
     }
 
     _calculateConsumo() {
@@ -87,8 +86,7 @@ export class ReadingTemplate {
             dao.setData(dataJson);
             button.innerText = 'Cambiar';
             input.readOnly = true;
-        }
-        
+        }  
     }
 
 }

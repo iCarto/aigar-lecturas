@@ -1,7 +1,6 @@
 export class Dao {
 
     getData() {
-        if (window.localStorage.getItem('dataJson') != null) {
             window.localStorage.clear();
             const mockData = [
                 {"id": 1, "name": "Maria del Transito de la O", "num_socio": 1, "orden": 1, "sector": 1, "lectura_anterior": 20, "lectura": null, "consumo_calculado": "--", "tarifa_calculada": "--", "num_contador": 98001, "cambio_contador": false},
@@ -14,15 +13,18 @@ export class Dao {
             ];
 
             const dataJson = JSON.stringify(mockData);
-            window.localStorage.setItem('dataJson', dataJson );
+            window.localStorage.setItem('dataJson', dataJson);
+            
             return window.localStorage.getItem('dataJson');
-        }else {
-            return window.localStorage.getItem('dataJson');
-        }   
     }
 
     setData(dataJson) {
         window.localStorage.clear();
         window.localStorage.setItem('dataJson', dataJson);
+    }
+
+    getTarifa() {
+        window.localStorage.setItem('tarifa', '3.14');
+        return window.localStorage.getItem('tarifa');
     }
 }
