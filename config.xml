@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="es.icarto.aigarLecturas" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>AIGAR-Lecturas</name>
+    <icon src="www/img/logo.png" />
     <description>
         AIGAR: Aplicación de lectura de consumos de agua en las Juntas de Agua
     </description>
