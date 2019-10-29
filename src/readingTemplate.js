@@ -78,6 +78,7 @@ export class ReadingTemplate {
             for (var i=0; i<users.length; i++) {
                 if (users[i]['id'] === parseInt(this._id)) {
                     users[i]['num_contador'] = parseInt(document.getElementById('contadorTextField').value);
+                    users[i]['cambio_contador'] = true;
                 }
             }
             this._mainTemplate._initialUsers = users;
