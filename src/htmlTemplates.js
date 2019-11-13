@@ -1,12 +1,7 @@
 export const usersListTemplate = `
-<div class="container-fluid">       
-<div class="row" style="margin-bottom: 20px"></div>
-<div class="row">
-<div class="col-12 progress" style="height: 30px;">
-<h3>AIGAR Lecturas</h3>
-</div>
-</div>
 
+<div class="container-fluid">     
+ 
 <div class="row" style="margin-bottom: 20px"></div>
 
 <div class="row">
@@ -55,12 +50,6 @@ export const usersListTemplate = `
 `
 export const readingsTemplate = `
 <div class="container-fluid">       
-<div class="row" style="margin-bottom: 20px"></div>
-<div class="row">
-<div class="col-12 progress" style="height: 30px;">
-<h3>AIGAR Lecturas</h3>
-</div>
-</div>
 
 <div class="row" style="margin-bottom: 20px"></div>
 
