@@ -24,6 +24,18 @@ export class ReadingTemplate {
         $('#lectura').on('keyup', () => this._setNewReading());
 
         $('#contadorButton').on('click', () => this._changeMeterNumber());
+
+        $('#previousButton').on('click', () => {
+            const index = this._mainTemplate._users.findIndex(obj => obj.id === parseInt(this._id));
+            this._id = this._mainTemplate._users[index-1]['id'];
+            this._addUserDataToTemplate();
+        });
+
+        $('#nextButton').on('click', () => {
+            const index = this._mainTemplate._users.findIndex(obj => obj.id === parseInt(this._id));
+            this._id = this._mainTemplate._users[index+1]['id'];
+            this._addUserDataToTemplate();
+        });
     }
 
     _getUserFromID() {

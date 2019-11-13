@@ -121,5 +121,14 @@ export const readingsTemplate = `
 </div>
 </div>
 
+<div class="row" style="margin-bottom: 100px"></div>
+
+<div class="row">
+<div id="orderButtons" class="col-12 btn-group btn-group-toggle">
+<button id="previousButton" type="button" class="btn btn-primary">Anterior</button>
+<button id="nextButton" type="button" class="btn btn-primary">Siguiente</button>
+</div>
+</div>
+
 </div>
 `
