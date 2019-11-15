@@ -2,7 +2,7 @@ export const usersListTemplate = `
 
 <div class="container-fluid">     
  
-<div class="row" style="margin-bottom: 20px"></div>
+<div class="row" style="margin-bottom: 15px"></div>
 
 <div class="row">
 <div class="col-2"> 
@@ -41,7 +41,7 @@ export const usersListTemplate = `
 </div>
 </div>
 
-<div class="row" style="margin-bottom: 20px"></div>
+<div class="row" style="margin-bottom: 15px"></div>
 
 <div>
 <ul id="usersList" class="list-group"></ul>
@@ -51,7 +51,7 @@ export const usersListTemplate = `
 export const readingsTemplate = `
 <div class="container-fluid">       
 
-<div class="row" style="margin-bottom: 20px"></div>
+<div class="row" style="margin-bottom: 10px"></div>
 
 <div class="row">
 <div id="name" class="col-12">
@@ -59,7 +59,7 @@ export const readingsTemplate = `
 </div>
 </div>
 
-<div class="row" style="margin-bottom: 20px"></div>
+<div class="row" style="margin-bottom: 10px"></div>
 
 <div class="row">
 <div class="col-12">
@@ -81,7 +81,7 @@ export const readingsTemplate = `
 </div>
 </div>
 
-<div class="row" style="margin-bottom: 20px"></div>
+<div class="row" style="margin-bottom: 10px"></div>
 
 <div class="row">
 <div class="col-10">
@@ -110,13 +110,14 @@ export const readingsTemplate = `
 </div>
 </div>
 
-<div class="row" style="margin-bottom: 20px"></div>
+<div class="row" style="margin-bottom: 10px"></div>
 
-<div class="row">
-<div id="orderButtons" class="col-12 btn-group btn-group-toggle">
-<button id="previousButton" type="button" class="btn btn-primary">Anterior</button>
-<button id="nextButton" type="button" class="btn btn-primary">Siguiente</button>
-</div>
+<div class="row" style="margin-left: 2px; margin-right: 2px;">
+
+<button id="previousButton" type="button" class="col-4 btn btn-primary">Anterior</button>
+<div class="col-4"></div>
+<button id="nextButton" type="button" class="col-4 btn btn-primary">Siguiente</button>
+
 </div>
 
 </div>
