@@ -35,9 +35,5 @@ export class Dao {
         window.localStorage.setItem('dataJson', dataJson);
         this.writeFile(dataJson);
     }
-
-    getTarifa() {
-        window.localStorage.setItem('tarifa', '3.14');
-        return window.localStorage.getItem('tarifa');
-    }
+    
 }

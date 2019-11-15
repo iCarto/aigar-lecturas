@@ -60,7 +60,7 @@ export class ReadingTemplate {
             if (users[i]['id'] === parseInt(this._id)) {
                 users[i]['lectura'] = parseInt(document.getElementById('lectura').value);
                 users[i]['consumo_calculado'] = parseInt(this._calculateConsumo());
-                users[i]['tarifa_calculada'] = parseInt(this._calculateConsumo()) * parseFloat(dao.getTarifa());
+                users[i]['tarifa_calculada'] = this._calculateTarifa();
             }
         }
         this._mainTemplate._initialUsers = users;
@@ -69,12 +69,33 @@ export class ReadingTemplate {
         dao.setData(dataJson);
 
         document.getElementById('consumo_calculado').innerHTML = this._calculateConsumo();
-        document.getElementById('tarifa_calculada').innerHTML = this._calculateConsumo() * parseFloat(dao.getTarifa());   
+        document.getElementById('tarifa_calculada').innerHTML = this._calculateTarifa();   
     }
 
     _calculateConsumo() {
         return parseInt(document.getElementById('lectura').value) -
             parseInt(document.getElementById('lectura_anterior').innerHTML);
+    }
+
+    _calculateTarifa() {
+        const user = this._getUserFromID();
+        const userCuotaFija = parseFloat(user[0]['cuota_fija'].replace(',', '.'));
+        const userComision = parseFloat(user[0]['comision'].replace(',', '.'));
+        const userAhorro = parseFloat(user[0]['ahorro'].replace(',', '.'));
+        var cuotaVariable = 0;
+
+        if (this._calculateConsumo() > 14 && this._calculateConsumo() <= 20) {
+            cuotaVariable = (this._calculateConsumo() - 14) * 0.75; 
+            
+        }
+
+        if (this._calculateConsumo() > 20) {
+            cuotaVariable = 4.50 + ((this._calculateConsumo() - 20) * 2.50);
+        }
+
+        const tarifa = userCuotaFija + cuotaVariable + userComision + userAhorro;
+
+        return tarifa.toFixed(2).replace('.', ',');
     }
 
     _changeMeterNumber() {
