@@ -1,33 +1,51 @@
-import {mockData} from './data.js';
-
 export class Dao {
+
+    constructor() {
+        this.dataDirectory = cordova.file.externalRootDirectory + 'download/';
+    }
 
     getData() {
         window.localStorage.clear();
-        const dataJson = JSON.stringify(mockData);
-        window.localStorage.setItem('dataJson', dataJson);
-            
-        return window.localStorage.getItem('dataJson');
+
+        function onReadFinish(result) {
+            window.localStorage.setItem('dataJson', result);
+        }
+
+        window.resolveLocalFileSystemURL(this.dataDirectory, function(dir) {
+            dir.getFile("lecturas.json", {create:false}, function(fileEntry) {
+                if (fileEntry.isFile) {
+                    fileEntry.file(function (file) {
+                        var reader = new FileReader();
+                        reader.onloadend = function() {
+                            const users = JSON.parse(this.result);
+                            const dataJson = JSON.stringify(users);
+                            onReadFinish(dataJson);
+                        };
+                        reader.readAsText(file);
+                    });
+                }
+            });
+         });
     }
 
+
+
     writeFile(data) {
-        var type = LocalFileSystem.PERSISTENT;
-        var size = 5*1024*1024;
-        window.requestFileSystem(type, size, successCallback, errorCallback)
-     
-        function successCallback(fs) {
-           fs.root.getFile('log.txt', {create: true}, function(fileEntry) {
-     
-              fileEntry.createWriter(function(fileWriter) {
-                 var blob = new Blob([data], {type: 'text/plain'});
-                 fileWriter.write(blob);
-              }, errorCallback);
-           }, errorCallback);
-        }
-     
-        function errorCallback(error) {
-           alert("ERROR: " + error.code)
-        }
+        window.resolveLocalFileSystemURL(this.dataDirectory, function(dir) {
+            dir.getFile("lecturas.json", {create:false}, function(fileEntry) {
+                if (fileEntry.isFile) {
+                    fileEntry.remove();
+                }
+            });
+            dir.getFile("lecturas.json", {create:true}, function(file) {
+                var logOb = file;      
+                logOb.createWriter(function(fileWriter) {
+                    fileWriter.seek(fileWriter.length);
+                    var blob = new Blob([data], {type:'text/plain'});
+                    fileWriter.write(blob);
+                }, function(e){console.error(e);});
+            });
+       });
      }
 
     setData(dataJson) {

@@ -81,7 +81,12 @@ export class ReadingTemplate {
         const user = this._getUserFromID();
         const userCuotaFija = parseFloat(user[0]['cuota_fija'].replace(',', '.'));
         const userComision = parseFloat(user[0]['comision'].replace(',', '.'));
-        const userAhorro = parseFloat(user[0]['ahorro'].replace(',', '.'));
+        var userAhorro;
+        if (user[0]['ahorro'].includes(',')) {
+            userAhorro = parseFloat(user[0]['ahorro'].replace(',', '.'));
+        } else {
+            userAhorro = parseFloat(user[0]['ahorro']);
+        }
         var cuotaVariable = 0;
 
         if (this._calculateConsumo() > 14 && this._calculateConsumo() <= 20) {
