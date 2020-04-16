@@ -45,7 +45,7 @@ export class ReadingTemplate {
     _addUserDataToTemplate() {
         const user = this._getUserFromID();
         document.getElementById('name').innerHTML = '<h4>'+user[0]['name']+'</h4>';
-        document.getElementById('contadorTextField').value = user[0]['num_contador'];
+        document.getElementById('contadorTextField').value = user[0]['medidor'];
         document.getElementById('lectura_anterior').innerHTML = user[0]['lectura_anterior'];
         document.getElementById('lectura').value = user[0]['lectura'];
         document.getElementById('consumo_calculado').innerHTML = user[0]['consumo_calculado'];
@@ -109,8 +109,8 @@ export class ReadingTemplate {
             const users = this._mainTemplate._initialUsers;
             for (var i=0; i<users.length; i++) {
                 if (users[i]['id'] === parseInt(this._id)) {
-                    users[i]['num_contador'] = parseInt(document.getElementById('contadorTextField').value);
-                    users[i]['cambio_contador'] = true;
+                    users[i]['medidor'] = parseInt(document.getElementById('contadorTextField').value);
+                    users[i]['cambio_medidor'] = true;
                 }
             }
             this._mainTemplate._initialUsers = users;

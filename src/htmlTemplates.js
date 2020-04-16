@@ -65,7 +65,7 @@ export const readingsTemplate = `
 <div class="col-12">
 <form>
 <div class="form-group">
-<label for="">Número contador</label>
+<label for="">Número medidor</label>
 <div class="input-group mb-3">
 <input id="contadorTextField" type="number" class="form-control" readonly>
 <div class="input-group-append">
