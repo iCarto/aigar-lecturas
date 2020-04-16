@@ -79,19 +79,14 @@ export class ReadingTemplate {
 
     _calculateTarifa() {
         const user = this._getUserFromID();
-        const userCuotaFija = parseFloat(user[0]['cuota_fija'].replace(',', '.'));
-        const userComision = parseFloat(user[0]['comision'].replace(',', '.'));
-        var userAhorro;
-        if (user[0]['ahorro'].includes(',')) {
-            userAhorro = parseFloat(user[0]['ahorro'].replace(',', '.'));
-        } else {
-            userAhorro = parseFloat(user[0]['ahorro']);
-        }
+        const userCuotaFija = user[0]['cuota_fija'];
+        const userComision = user[0]['comision'];
+        const userAhorro = user[0]['ahorro'];
+
         var cuotaVariable = 0;
 
         if (this._calculateConsumo() > 14 && this._calculateConsumo() <= 20) {
-            cuotaVariable = (this._calculateConsumo() - 14) * 0.75; 
-            
+            cuotaVariable = (this._calculateConsumo() - 14) * 0.75;    
         }
 
         if (this._calculateConsumo() > 20) {
@@ -100,7 +95,7 @@ export class ReadingTemplate {
 
         const tarifa = userCuotaFija + cuotaVariable + userComision + userAhorro;
 
-        return tarifa.toFixed(2).replace('.', ',');
+        return tarifa;
     }
 
     _changeMeterNumber() {
