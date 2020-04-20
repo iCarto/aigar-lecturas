@@ -24,15 +24,16 @@ import '../www/libs/jquery.min.js';
 'cordova' in window ? document.addEventListener("deviceready", init, false) : init();
 
 function init() {
-  const dao = new Dao();
-  dao.getData();
 
-  setTimeout(
-    function() {
-      const users = JSON.parse(window.localStorage.getItem('dataJson'));  
-      const mainTemplate = new MainTemplate("Recorrido", "Todos", users);
-      const usersList = document.getElementById(mainTemplate.getUsersListElement());
-      mainTemplate.fillUsersList(usersList);
-      mainTemplate.setListeners();
-    }, 1000);
+  const dao = new Dao();
+  const promise = dao.getData();
+
+  promise.then(function() {
+    const users = JSON.parse(window.localStorage.getItem('dataJson'));  
+    const mainTemplate = new MainTemplate("Recorrido", "Todos", users);
+    const usersList = document.getElementById(mainTemplate.getUsersListElement());
+    mainTemplate.fillUsersList(usersList);
+    mainTemplate.setListeners();
+  })
+  .catch(error => console.log(error));
 }
