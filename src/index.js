@@ -18,6 +18,7 @@
  */
 import {Dao} from './dao.js';
 import { MainTemplate } from './mainTemplate.js';
+import { ExportReadings } from './exportReadings.js';
 
 import '../www/libs/jquery.min.js';
 
@@ -34,6 +35,9 @@ function init() {
     const usersList = document.getElementById(mainTemplate.getUsersListElement());
     mainTemplate.fillUsersList(usersList);
     mainTemplate.setListeners();
+
+    const exportReadings = new ExportReadings();
+    exportReadings.setListeners();
   })
   .catch(error => console.log(error));
 }

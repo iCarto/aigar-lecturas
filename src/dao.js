@@ -46,30 +46,33 @@ export class Dao {
         })
     }
 
-    writeData(data) {
-        window.resolveLocalFileSystemURL(this.dataDirectory, function(dir) {
-            dir.getFile("lecturas.json", {create:true}, function(file) {
-                var logOb = file;      
-                logOb.createWriter(function(fileWriter) {
-                    fileWriter.seek(fileWriter.length);
-                    var blob = new Blob([data], {type:'text/plain'});
-                    fileWriter.write(blob);
-                }, function(e){console.error(e);});
+    writeDataToFile(data, filename) {
+        return new Promise((resolve, reject) => {
+            window.resolveLocalFileSystemURL(this.dataDirectory, function(dir) {
+                dir.getFile(filename, {create:true}, function(file) {
+                    var logOb = file;      
+                    logOb.createWriter(function(fileWriter) {
+                        fileWriter.seek(fileWriter.length);
+                        var blob = new Blob([data], {type:'text/plain'});
+                        fileWriter.write(blob);
+                        resolve(() => {console.log("File written")});
+                    }, function(e){console.error(e);});
+                });
             });
-        });
+        })
     }
 
-    writeFile(data) {
+    writeFile(data, filename) {
         const promise = this.removeFile();
         promise.then(() => {
-            this.writeData(data);
+            this.writeDataToFile(data, filename);
         });
      }
 
     setData(dataJson) {
         window.localStorage.clear();
         window.localStorage.setItem('dataJson', dataJson);
-        this.writeFile(dataJson);
+        this.writeFile(dataJson, "lecturas.json");
     }
     
 }
