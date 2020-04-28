@@ -2,48 +2,52 @@ export class Dao {
 
     constructor() {
         this.dataDirectory = cordova.file.externalRootDirectory + 'download/';
+        this.db = window.sqlitePlugin.openDatabase({name: 'lecturas.sqlite', location: 'default'});
+        this._createDBTables();
     }
 
     getData() {
-        window.localStorage.clear();
-
         return new Promise((resolve, reject) => {
-
-            function onReadFinish(result) {
-                window.localStorage.setItem('dataJson', result);
-            }
-
-            window.resolveLocalFileSystemURL(this.dataDirectory, function(dir) {
-                dir.getFile("lecturas.json", {create:false}, function(fileEntry) {
-                    if (fileEntry.isFile) {
-                        fileEntry.file(function (file) {
-                            var reader = new FileReader();
-                            reader.onloadend = function() {
-                                const users = JSON.parse(this.result);
-                                const dataJson = JSON.stringify(users);
-                                resolve(onReadFinish(dataJson));
-                            };
-                            reader.readAsText(file);
-                        });
-                    } else {
-                        reject(new Error("No es un fichero"));
-                    }
-                });
+            const that = this;
+            this.db.executeSql('SELECT * FROM users', [], function (rs) {
+                const result = rs.rows.item(0).dataJSON;
+                resolve(result);   
             });
         })
     }
 
-    removeFile() {
+    setData(dataJson) {
+        window.localStorage.clear();
+        window.localStorage.setItem('dataJson', dataJson);
+        this._writeFile(dataJson, "lecturas.json");
+    }
+
+    getDataOnStart() {
         return new Promise((resolve, reject) => {
+
+            var that = this;
+            
             window.resolveLocalFileSystemURL(this.dataDirectory, function(dir) {
-                dir.getFile("lecturas.json", {create:false}, function(fileEntry) {
-                    if (fileEntry.isFile) {
-                        fileEntry.remove();
-                        resolve(() => {console.log("File removed")});
-                    }
-                });
+                dir.getFile("lecturas.json", {create:false}, fileExists, fileNotExists );
             });
+
+            function fileExists() {
+                const promise = that._importDataFromFile();
+                promise.then(function() {
+                    that.getData().then(function (result){
+                        resolve(result);
+                    });
+                });
+            }
+
+            function fileNotExists() {
+                that.getData().then(function (result){
+                    resolve(result);
+                });
+            }
+
         })
+
     }
 
     writeDataToFile(data, filename) {
@@ -62,17 +66,76 @@ export class Dao {
         })
     }
 
-    writeFile(data, filename) {
-        const promise = this.removeFile();
+    _importDataFromFile() {
+        return new Promise((resolve, reject) => {
+
+            this.db.transaction(function (tx) {
+                var executeQuery = 'DELETE FROM users';
+                tx.executeSql(executeQuery, []);
+            }, function (error) {
+                console.log('transaction error: ' + error.message);
+            }, function () {
+                console.log('transaction ok');
+            });
+
+            function onReadFinish(result) {
+                const db = window.sqlitePlugin.openDatabase({name: 'lecturas.sqlite', location: 'default'});
+                db.transaction(function (tx) {
+                    var executeQuery = 'INSERT INTO users (dataJSON) VALUES (?)';
+                    tx.executeSql(executeQuery, [result]);
+                }, function (error) {
+                    console.log('transaction error: ' + error.message);
+                }, function () {
+                    console.log('transaction ok');
+                    resolve();
+                });
+            }
+
+            window.resolveLocalFileSystemURL(this.dataDirectory, function(dir) {
+                dir.getFile("lecturas.json", {create:false}, function(fileEntry) {
+                    fileEntry.file(function (file) {
+                        var reader = new FileReader();
+                        reader.onloadend = function() {
+                            const users = JSON.parse(this.result);
+                            const dataJson = JSON.stringify(users);
+                            onReadFinish(dataJson);
+                        };
+                        reader.readAsText(file);
+                    });       
+                });
+            });
+
+        })
+    }
+
+    _createDBTables() {
+        this.db.sqlBatch([
+            'CREATE TABLE IF NOT EXISTS users (id integer primary key, dataJSON text)',
+          ], function() {
+            console.log('Populated database OK');
+          }, function(error) {
+            console.log('SQL batch ERROR: ' + error.message);
+          });
+    }
+
+    _removeFile() {
+        return new Promise((resolve, reject) => {
+            window.resolveLocalFileSystemURL(this.dataDirectory, function(dir) {
+                dir.getFile("lecturas.json", {create:false}, function(fileEntry) {
+                    if (fileEntry.isFile) {
+                        fileEntry.remove();
+                        resolve(() => {console.log("File removed")});
+                    }
+                });
+            });
+        })
+    }
+
+    _writeFile(data, filename) {
+        const promise = this._removeFile();
         promise.then(() => {
             this.writeDataToFile(data, filename);
         });
      }
-
-    setData(dataJson) {
-        window.localStorage.clear();
-        window.localStorage.setItem('dataJson', dataJson);
-        this.writeFile(dataJson, "lecturas.json");
-    }
     
 }

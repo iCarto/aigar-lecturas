@@ -27,10 +27,9 @@ import '../www/libs/jquery.min.js';
 function init() {
 
   const dao = new Dao();
-  const promise = dao.getData();
 
-  promise.then(function() {
-    const users = JSON.parse(window.localStorage.getItem('dataJson'));  
+  dao.getDataOnStart().then(function(result) {
+    const users = JSON.parse(result);  
     const mainTemplate = new MainTemplate("Recorrido", "Todos", users);
     const usersList = document.getElementById(mainTemplate.getUsersListElement());
     mainTemplate.fillUsersList(usersList);
@@ -39,5 +38,5 @@ function init() {
     const exportReadings = new ExportReadings();
     exportReadings.setListeners();
   })
-  .catch(error => console.log(error));
+  // .catch(error => console.log(error));
 }
