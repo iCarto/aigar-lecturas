@@ -2,13 +2,13 @@ export class Dao {
 
     constructor() {
         this.dataDirectory = cordova.file.externalRootDirectory + 'download/';
+        this.importFileName = "lecturas.json";
         this.db = window.sqlitePlugin.openDatabase({name: 'lecturas.sqlite', location: 'default'});
         this._createDBTables();
     }
 
     getData() {
         return new Promise((resolve, reject) => {
-            const that = this;
             this.db.executeSql('SELECT * FROM users', [], function (rs) {
                 const result = rs.rows.item(0).dataJSON;
                 resolve(result);   
@@ -20,31 +20,16 @@ export class Dao {
         this.db.executeSql('UPDATE users SET dataJSON = ?', [dataJson]);
     }
 
-    getDataOnStart() {
+    getDataFromFile() {
         return new Promise((resolve, reject) => {
 
-            var that = this;
-            
-            window.resolveLocalFileSystemURL(this.dataDirectory, function(dir) {
-                dir.getFile("lecturas.json", {create:false}, fileExists, fileNotExists );
-            });
-
-            function fileExists() {
-                const promise = that._importDataFromFile();
-                promise.then(function() {
-                    that.getData().then(function (result){
-                        resolve(result);
-                    });
-                    that._removeFile();
-                });
-            }
-
-            function fileNotExists() {
-                that.getData().then(function (result){
+            const promise = this._importDataFromFile();
+            promise.then(() => {
+                this.getData().then(function (result){
                     resolve(result);
                 });
-            }
-
+            this._removeFile();
+            });
         })
 
     }
@@ -90,8 +75,8 @@ export class Dao {
                 });
             }
 
-            window.resolveLocalFileSystemURL(this.dataDirectory, function(dir) {
-                dir.getFile("lecturas.json", {create:false}, function(fileEntry) {
+            window.resolveLocalFileSystemURL(this.dataDirectory, (dir) => {
+                dir.getFile(this.importFileName, {create:false}, function(fileEntry) {
                     fileEntry.file(function (file) {
                         var reader = new FileReader();
                         reader.onloadend = function() {
@@ -119,8 +104,8 @@ export class Dao {
 
     _removeFile() {
         return new Promise((resolve, reject) => {
-            window.resolveLocalFileSystemURL(this.dataDirectory, function(dir) {
-                dir.getFile("lecturas.json", {create:false}, function(fileEntry) {
+            window.resolveLocalFileSystemURL(this.dataDirectory, (dir) => {
+                dir.getFile(this.importFileName, {create:false}, function(fileEntry) {
                     if (fileEntry.isFile) {
                         fileEntry.remove();
                         resolve(() => {console.log("File removed")});

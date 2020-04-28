@@ -19,6 +19,7 @@
 import {Dao} from './dao.js';
 import { MainTemplate } from './mainTemplate.js';
 import { ExportReadings } from './exportReadings.js';
+import { dataImportedAlertTemplate } from './htmlTemplates.js';
 
 import '../www/libs/jquery.min.js';
 
@@ -28,7 +29,24 @@ function init() {
 
   const dao = new Dao();
 
-  dao.getDataOnStart().then(function(result) {
+  window.resolveLocalFileSystemURL(dao.dataDirectory, function(dir) {
+    dir.getFile(dao.importFileName, {create:false}, fileExists, fileNotExists );
+  });
+
+  function fileExists() {
+    dao.getDataFromFile().then(function(result){
+      loadUsersList(result);
+      document.getElementById("alertsZone").innerHTML = dataImportedAlertTemplate;
+    });
+  }
+
+  function fileNotExists() {
+    dao.getData().then(function(result) {
+      loadUsersList(result);
+    })
+  }
+
+  function loadUsersList(result) {
     const users = JSON.parse(result);  
     const mainTemplate = new MainTemplate("Recorrido", "Todos", users);
     const usersList = document.getElementById(mainTemplate.getUsersListElement());
@@ -37,6 +55,6 @@ function init() {
 
     const exportReadings = new ExportReadings();
     exportReadings.setListeners();
-  })
-  // .catch(error => console.log(error));
+  }
+
 }
