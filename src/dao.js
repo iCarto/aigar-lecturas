@@ -114,12 +114,5 @@ export class Dao {
             });
         })
     }
-
-    _writeFile(data, filename) {
-        const promise = this._removeFile();
-        promise.then(() => {
-            this.writeDataToFile(data, filename);
-        });
-     }
     
 }
