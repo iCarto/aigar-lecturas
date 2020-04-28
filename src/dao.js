@@ -17,9 +17,7 @@ export class Dao {
     }
 
     setData(dataJson) {
-        window.localStorage.clear();
-        window.localStorage.setItem('dataJson', dataJson);
-        this._writeFile(dataJson, "lecturas.json");
+        this.db.executeSql('UPDATE users SET dataJSON = ?', [dataJson]);
     }
 
     getDataOnStart() {
@@ -37,6 +35,7 @@ export class Dao {
                     that.getData().then(function (result){
                         resolve(result);
                     });
+                    that._removeFile();
                 });
             }
 
