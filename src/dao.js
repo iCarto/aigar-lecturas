@@ -37,11 +37,12 @@ export class Dao {
     writeDataToFile(data, filename) {
         return new Promise((resolve, reject) => {
             window.resolveLocalFileSystemURL(this.dataDirectory, function(dir) {
-                dir.getFile(filename, {create:true}, function(file) {
-                    var logOb = file;      
+                dir.getFile(filename, {create: true, exclusive: false}, function(file) {
+                    var logOb = file; 
                     logOb.createWriter(function(fileWriter) {
                         fileWriter.seek(fileWriter.length);
                         var blob = new Blob([data], {type:'text/plain'});
+                        fileWriter.truncate(0);
                         fileWriter.write(blob);
                         resolve(() => {console.log("File written")});
                     }, function(e){console.error(e);});
