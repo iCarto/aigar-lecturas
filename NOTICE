@@ -1,6 +1,6 @@
 Estas son las dependecias y licencias usadas en AIGAR-Lecturas.
 
-Todas ellas son compatibles con la GPL usanda para licenciar la aplicación.
+Todas ellas son compatibles con la licencia GPLv3 usada para licenciar la aplicación.
 
 "@babel/code-frame@7.5.5","MIT","https://github.com/babel/babel/tree/master/packages/babel-code-frame"
 "@babel/highlight@7.5.0","MIT","https://github.com/babel/babel/tree/master/packages/babel-highlight"
