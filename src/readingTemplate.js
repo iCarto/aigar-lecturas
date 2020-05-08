@@ -50,6 +50,8 @@ export class ReadingTemplate {
         document.getElementById('lectura').value = user[0]['lectura'];
         document.getElementById('consumo_calculado').innerHTML = user[0]['consumo_calculado'];
         document.getElementById('tarifa_calculada').innerHTML = user[0]['tarifa_calculada'];
+
+        document.getElementById('lectura').focus();
     }
 
     _setNewReading() {
