@@ -29,6 +29,19 @@ function init() {
 
   const dao = new Dao();
 
+  /* Workarround: Checking android filesystem permissions
+
+  For some reason, cordova file plugin returns an error of file permissions
+  when first action is deleting a file, though user has granted write permissions to the app. 
+  If first action is writing a file, there are no problems with permissions. 
+  Since that moment it's possible delete files as well.
+  */
+  window.resolveLocalFileSystemURL(dao.dataDirectory, function(dir) {
+    dir.getFile("check_write_permissions", {create:true}, function(fileEntry) {
+      fileEntry.remove();
+    }, function(error) {console.log("Error: " + error.code) })
+  })
+
   window.resolveLocalFileSystemURL(dao.dataDirectory, function(dir) {
     dir.getFile(dao.importFileName, {create:false}, fileExists, fileNotExists );
   });

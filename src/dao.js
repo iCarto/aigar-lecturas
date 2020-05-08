@@ -108,7 +108,10 @@ export class Dao {
             window.resolveLocalFileSystemURL(this.dataDirectory, (dir) => {
                 dir.getFile(this.importFileName, {create:false}, function(fileEntry) {
                     if (fileEntry.isFile) {
-                        fileEntry.remove();
+                        fileEntry.remove(null, function() {
+                            alert("No se ha podido borrar el fichero importado \"lecturas.json\"." +
+                                    " Debe borrarlo a mano y comprobar los permisos de almacenamiento de la aplicación")
+                        });
                         resolve(() => {console.log("File removed")});
                     }
                 });
