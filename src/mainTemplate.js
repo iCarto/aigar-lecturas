@@ -74,15 +74,29 @@ export class MainTemplate {
       userName.setAttribute("id", this._users[i]['id']);
       userName.textContent = this._users[i]["name"];
       li.appendChild(userName);
-      li.appendChild(document.createTextNode("Nº socio:" + this._users[i]['num_socio']));
+      li.appendChild(document.createTextNode("Nº socio:" + this._users[i]['id']));
       li.classList.add("list-group-item");
       element.appendChild(li); 
     }
   }
 
+
+
   _initializeWidgets() {
+    this._initializeSectorWidget()
     document.getElementById(this._order).classList.add('active');
     $('#sector').val(this._sector);
+  }
+
+  _initializeSectorWidget() {
+    const sectores = new Set();
+    for (const member of this._users) {
+      sectores.add(member["sector"]);
+    }
+    const options = Array.from(sectores).map(sector => `<option value="${sector}">${sector}</option>`);
+    options.sort();
+    options.unshift('<option value="Todos">Todos</option>');
+    document.getElementById("sector").innerHTML = options
   }
 
   _initializeUsersListByFilters() {
@@ -112,7 +126,7 @@ export class MainTemplate {
     if (this._sector === "Todos") {
       return this._users;
     }else {
-      return this._users.filter(user => user.sector === parseInt(this._sector));
+      return this._users.filter(user => user.sector == this._sector);
     }
     
   }

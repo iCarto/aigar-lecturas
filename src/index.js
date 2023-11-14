@@ -61,7 +61,8 @@ function init() {
   }
 
   function loadUsersList(result) {
-    const users = JSON.parse(result);  
+    const data = JSON.parse(result);
+    const users = data["members"];
     const mainTemplate = new MainTemplate("Recorrido", "Todos", users);
     const usersList = document.getElementById(mainTemplate.getUsersListElement());
     mainTemplate.fillUsersList(usersList);
