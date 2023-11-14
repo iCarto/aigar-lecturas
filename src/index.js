@@ -20,6 +20,7 @@ import {Dao} from './dao.js';
 import { MainTemplate } from './mainTemplate.js';
 import { ExportReadings } from './exportReadings.js';
 import { dataImportedAlertTemplate } from './htmlTemplates.js';
+import { EXPORT } from './export.js' // TODO
 
 import '../www/libs/jquery.min.js';
 
@@ -69,5 +70,9 @@ function init() {
     const exportReadings = new ExportReadings();
     exportReadings.setListeners();
   }
+
+  setTimeout(()=> { // TODO
+    loadUsersList(JSON.stringify(EXPORT))
+  }, 5000)
 
 }
