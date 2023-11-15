@@ -26,7 +26,7 @@ export const usersListTemplate = `
 
 <div class="row">           
 <div class="col-12 input-group">
-<input class="form-control py-2 border-right-0 border" type="search" value="Buscar usuario..." id="findUser">
+<input class="form-control py-2 border-right-0 border" type="search" placeholder="Buscar socio ..." id="findUser">
 <span class="input-group-append">
 <div class="input-group-text bg-transparent"><i class="fas fa-address-book"></i></div>
 </span>

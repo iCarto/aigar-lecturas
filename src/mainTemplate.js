@@ -74,7 +74,7 @@ export class MainTemplate {
       userName.setAttribute("id", this._users[i]['id']);
       userName.textContent = this._users[i]["name"];
       li.appendChild(userName);
-      li.appendChild(document.createTextNode("Nº socio:" + this._users[i]['id']));
+      li.appendChild(document.createTextNode("Nº socio: " + this._users[i]['id']));
       li.classList.add("list-group-item");
       element.appendChild(li); 
     }
