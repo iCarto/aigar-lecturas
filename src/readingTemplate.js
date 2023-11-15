@@ -70,8 +70,8 @@ export class ReadingTemplate {
         const dataJson = JSON.stringify(users);
         dao.setData(dataJson);
 
-        document.getElementById('consumo').innerHTML = this._calculateConsumo();
-        document.getElementById('tarifa_calculada').innerHTML = this._calculateTarifa();   
+        document.getElementById('consumo').innerHTML = this._calculateConsumo() || "";
+        document.getElementById('tarifa_calculada').innerHTML = this._calculateTarifa() || "";
     }
 
     _calculateConsumo() {
@@ -81,23 +81,34 @@ export class ReadingTemplate {
 
     _calculateTarifa() {
         const user = this._getUserFromID();
-        const userCuotaFija = 1; // user[0]['cuota_fija'];
-        const userComision = 1; // user[0]['comision'];
-        const userAhorro = 1; // user[0]['ahorro'];
+        const tipo_uso = user[0]["tipo_uso"].toLowerCase();
 
-        var cuotaVariable = 0;
+        const cuotaFija = parseFloat(window.AIGAR.meta[`${tipo_uso}_cuota_fija`]);
+        const comision = parseFloat(window.AIGAR.meta["comision"]);
+        const ahorro = parseFloat(window.AIGAR.meta["ahorro"]);
 
-        if (this._calculateConsumo() > 14 && this._calculateConsumo() <= 20) {
-            cuotaVariable = (this._calculateConsumo() - 14) * 0.75;    
+        const cuotaVariable = this._calculateVariableFee(tipo_uso);
+
+        return cuotaFija + cuotaVariable + comision + ahorro;
+    }
+
+    _calculateVariableFee(tipo_uso) {
+        const stretches = window.AIGAR.meta[`${tipo_uso}_tramos`];
+
+        let remaining_consumption = this._calculateConsumo()
+        let partial_sum = 0
+        let last_limit = 0
+        for (const stretch of stretches) {
+            if (remaining_consumption <= 0) {
+                break
+            }
+            let current_limit = parseFloat(stretch["limit"]) - last_limit
+            let consuption = Math.min(current_limit, remaining_consumption)
+            partial_sum += consuption * parseFloat(stretch["cost"])
+            remaining_consumption -= consuption
+            last_limit = parseFloat(stretch["limit"])
         }
-
-        if (this._calculateConsumo() > 20) {
-            cuotaVariable = 4.50 + ((this._calculateConsumo() - 20) * 2.50);
-        }
-
-        const tarifa = userCuotaFija + cuotaVariable + userComision + userAhorro;
-
-        return tarifa;
+        return partial_sum
     }
 
     _changeMeterNumber() {
