@@ -59,15 +59,15 @@ export const readingsTemplate = `
 <div class="form-group">
 <label for="">Número medidor</label>
 <div class="input-group mb-3">
-<input id="contadorTextField" type="number" class="form-control" readonly>
+<input id="medidorTextField" type="number" class="form-control" readonly>
 <div class="input-group-append">
-<button class="btn btn-outline-primary" type="button" id="contadorButton">Cambiar</button>
+<button class="btn btn-outline-primary" type="button" id="medidorButton">Cambiar</button>
 </div>
 </div>
 </div>
 <div class="form-group">
-<label class="font-weight-bold col-form-label-lg" for="exampleFormControlTextarea1">Lectura</label>
-<input id="lectura" type="number" class="form-control form-control-lg text-right" autofocus>
+<label class="font-weight-bold col-form-label-lg" for="caudal_actual">Caudal actual</label>
+<input id="caudal_actual" type="number" class="form-control form-control-lg text-right" autofocus>
 </div>
 </form>
 </div>
@@ -77,19 +77,19 @@ export const readingsTemplate = `
 
 <div class="row">
 <div class="col-10">
-<label>Lectura anterior:</label>
+<label>Caudal anterior:</label>
 </div>
 <div class="col-2">
-<label id="lectura_anterior"></label>
+<label id="caudal_anterior"></label>
 </div>
 </div>
 
 <div class="row">
 <div class="col-10">
-<label>Consumo calculado:</label>
+<label>Consumo:</label>
 </div>
 <div class="col-2">
-<label id="consumo_calculado">--</label>
+<label id="consumo">--</label>
 </div>
 </div>
 

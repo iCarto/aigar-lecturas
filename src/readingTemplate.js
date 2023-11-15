@@ -21,9 +21,9 @@ export class ReadingTemplate {
             mainTemplate.setListeners();  
         }, false);
 
-        $('#lectura').on('keyup', () => this._setNewReading());
+        $('#caudal_actual').on('keyup', () => this._setNewReading());
 
-        $('#contadorButton').on('click', () => this._changeMeterNumber());
+        $('#medidorButton').on('click', () => this._changeMeterNumber());
 
         $('#previousButton').on('click', () => {
             const index = this._mainTemplate._users.findIndex(obj => obj.id === parseInt(this._id));
@@ -45,13 +45,13 @@ export class ReadingTemplate {
     _addUserDataToTemplate() {
         const user = this._getUserFromID();
         document.getElementById('name').innerHTML = '<h4>'+user[0]['name']+'</h4>';
-        document.getElementById('contadorTextField').value = user[0]['medidor'];
-        document.getElementById('lectura_anterior').innerHTML = user[0]['lectura_anterior'];
-        document.getElementById('lectura').value = user[0]['lectura'];
-        document.getElementById('consumo_calculado').innerHTML = user[0]['consumo_calculado'];
+        document.getElementById('medidorTextField').value = user[0]['medidor'];
+        document.getElementById('caudal_anterior').innerHTML = user[0]['caudal_anterior'];
+        document.getElementById('caudal_actual').value = user[0]['caudal_actual'];
+        document.getElementById('consumo').innerHTML = user[0]['consumo'];
         document.getElementById('tarifa_calculada').innerHTML = user[0]['tarifa_calculada'];
 
-        document.getElementById('lectura').focus();
+        document.getElementById('caudal_actual').focus();
     }
 
     _setNewReading() {
@@ -60,8 +60,8 @@ export class ReadingTemplate {
         const users = this._mainTemplate._initialUsers;
         for (var i=0; i<users.length; i++) {
             if (users[i]['id'] === parseInt(this._id)) {
-                users[i]['lectura'] = parseInt(document.getElementById('lectura').value);
-                users[i]['consumo_calculado'] = parseInt(this._calculateConsumo());
+                users[i]['caudal_actual'] = parseInt(document.getElementById('caudal_actual').value);
+                users[i]['consumo'] = parseInt(this._calculateConsumo());
                 users[i]['tarifa_calculada'] = this._calculateTarifa();
             }
         }
@@ -70,20 +70,20 @@ export class ReadingTemplate {
         const dataJson = JSON.stringify(users);
         dao.setData(dataJson);
 
-        document.getElementById('consumo_calculado').innerHTML = this._calculateConsumo();
+        document.getElementById('consumo').innerHTML = this._calculateConsumo();
         document.getElementById('tarifa_calculada').innerHTML = this._calculateTarifa();   
     }
 
     _calculateConsumo() {
-        return parseInt(document.getElementById('lectura').value) -
-            parseInt(document.getElementById('lectura_anterior').innerHTML);
+        return parseInt(document.getElementById('caudal_actual').value) -
+            parseInt(document.getElementById('caudal_anterior').innerHTML);
     }
 
     _calculateTarifa() {
         const user = this._getUserFromID();
-        const userCuotaFija = user[0]['cuota_fija'];
-        const userComision = user[0]['comision'];
-        const userAhorro = user[0]['ahorro'];
+        const userCuotaFija = 1; // user[0]['cuota_fija'];
+        const userComision = 1; // user[0]['comision'];
+        const userAhorro = 1; // user[0]['ahorro'];
 
         var cuotaVariable = 0;
 
@@ -101,8 +101,8 @@ export class ReadingTemplate {
     }
 
     _changeMeterNumber() {
-        const input = document.getElementById("contadorTextField");
-        const button = document.getElementById("contadorButton");
+        const input = document.getElementById("medidorTextField");
+        const button = document.getElementById("medidorButton");
         if (button.innerText === 'Cambiar') {
              button.innerText = 'Guardar';
             input.removeAttribute("readonly");
@@ -111,7 +111,7 @@ export class ReadingTemplate {
             const users = this._mainTemplate._initialUsers;
             for (var i=0; i<users.length; i++) {
                 if (users[i]['id'] === parseInt(this._id)) {
-                    users[i]['medidor'] = parseInt(document.getElementById('contadorTextField').value);
+                    users[i]['medidor'] = parseInt(document.getElementById('medidorTextField').value);
                     users[i]['cambio_medidor'] = true;
                 }
             }
