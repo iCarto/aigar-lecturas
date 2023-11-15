@@ -20,7 +20,6 @@ import {Dao} from './dao.js';
 import { MainTemplate } from './mainTemplate.js';
 import { ExportReadings } from './exportReadings.js';
 import { dataImportedAlertTemplate } from './htmlTemplates.js';
-import { EXPORT } from './export.js' // TODO
 
 import '../www/libs/jquery.min.js';
 
@@ -51,18 +50,28 @@ function init() {
     dao.getDataFromFile().then(function(result){
       loadUsersList(result);
       document.getElementById("alertsZone").innerHTML = dataImportedAlertTemplate;
+    }).catch((error) => {
+      document.getElementById("alertsZone").innerHTML = "Error importando lecturas.json";
     });
   }
 
   function fileNotExists() {
     dao.getData().then(function(result) {
       loadUsersList(result);
+    }).catch(error => {
+      document.getElementById("alertsZone").innerHTML = `Error cargado datos<br>${error.toString()}`;
     })
   }
 
   function loadUsersList(result) {
-    const data = JSON.parse(result);
-    const users = data["members"];
+    dao.getMeta().then((resultMeta) => {
+      window.AIGAR = {
+        "meta": JSON.parse(resultMeta)
+      }
+    }).catch(() => {
+      document.getElementById("alertsZone").innerHTML = "Error leyendo datos";
+    })
+    const users = JSON.parse(result);
     const mainTemplate = new MainTemplate("Recorrido", "Todos", users);
     const usersList = document.getElementById(mainTemplate.getUsersListElement());
     mainTemplate.fillUsersList(usersList);
@@ -71,9 +80,5 @@ function init() {
     const exportReadings = new ExportReadings();
     exportReadings.setListeners();
   }
-
-  setTimeout(()=> { // TODO
-    loadUsersList(JSON.stringify(EXPORT))
-  }, 5000)
 
 }

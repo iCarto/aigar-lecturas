@@ -16,6 +16,15 @@ export class Dao {
         })
     }
 
+    getMeta() {
+        return new Promise((resolve, reject) => {
+            this.db.executeSql('SELECT * FROM meta', [], function (rs) {
+                const result = rs.rows.item(0).dataJSON;
+                resolve(result);
+            });
+        })
+    }
+
     setData(dataJson) {
         this.db.executeSql('UPDATE users SET dataJSON = ?', [dataJson]);
     }
@@ -55,19 +64,19 @@ export class Dao {
         return new Promise((resolve, reject) => {
 
             this.db.transaction(function (tx) {
-                var executeQuery = 'DELETE FROM users';
-                tx.executeSql(executeQuery, []);
+                tx.executeSql('DELETE FROM users;', []);
+                tx.executeSql('DELETE FROM meta;', []);
             }, function (error) {
                 console.log('transaction error: ' + error.message);
             }, function () {
                 console.log('transaction ok');
             });
 
-            function onReadFinish(result) {
+            function onReadFinish(usersJSON, metaJSON) {
                 const db = window.sqlitePlugin.openDatabase({name: 'lecturas.sqlite', location: 'default'});
                 db.transaction(function (tx) {
-                    var executeQuery = 'INSERT INTO users (dataJSON) VALUES (?)';
-                    tx.executeSql(executeQuery, [result]);
+                    tx.executeSql('INSERT INTO users (dataJSON) VALUES (?)', [usersJSON]);
+                    tx.executeSql('INSERT INTO meta (dataJSON) VALUES (?)', [metaJSON]);
                 }, function (error) {
                     console.log('transaction error: ' + error.message);
                 }, function () {
@@ -81,9 +90,10 @@ export class Dao {
                     fileEntry.file(function (file) {
                         var reader = new FileReader();
                         reader.onloadend = function() {
-                            const users = JSON.parse(this.result);
-                            const dataJson = JSON.stringify(users);
-                            onReadFinish(dataJson);
+                            const data = JSON.parse(this.result);
+                            const usersJSON = JSON.stringify(data["members"]);
+                            const metaJSON = JSON.stringify(data["meta"]);
+                            onReadFinish(usersJSON, metaJSON);
                         };
                         reader.readAsText(file);
                     });       
@@ -95,7 +105,8 @@ export class Dao {
 
     _createDBTables() {
         this.db.sqlBatch([
-            'CREATE TABLE IF NOT EXISTS users (id integer primary key, dataJSON text)',
+            "CREATE TABLE IF NOT EXISTS users (id integer primary key, dataJSON text)",
+            "CREATE TABLE IF NOT EXISTS meta  (id integer primary key, dataJSON text)"
           ], function() {
             console.log('Populated database OK');
           }, function(error) {
