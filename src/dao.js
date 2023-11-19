@@ -1,9 +1,9 @@
 export class Dao {
 
     constructor() {
-        this.dataDirectory = cordova.file.externalRootDirectory + 'download/';
+        this.dataDirectory = cordova.file.externalDataDirectory;
         this.importFileName = "lecturas.json";
-        this.db = window.sqlitePlugin.openDatabase({name: 'lecturas.sqlite', location: 'default'});
+        this.db = window.sqlitePlugin.openDatabase({name: 'lecturas.sqlite', location: 'default', androidDatabaseProvider: 'system'});
         this._createDBTables();
     }
 
