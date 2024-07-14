@@ -26,7 +26,7 @@ export const usersListTemplate = `
 
 <div class="row">           
 <div class="col-12 input-group">
-<input class="form-control py-2 border-right-0 border" type="search" placeholder="Buscar socio ..." id="findUser">
+<input class="form-control py-2 border-right-0 border" type="search" placeholder="Buscar ..." id="findUser">
 <span class="input-group-append">
 <div class="input-group-text bg-transparent"><i class="fas fa-address-book"></i></div>
 </span>
@@ -39,7 +39,7 @@ export const usersListTemplate = `
 <ul id="usersList" class="list-group"></ul>
 </div>
 </div>
-`
+`;
 export const readingsTemplate = `
 <div class="container-fluid">       
 
@@ -113,14 +113,14 @@ export const readingsTemplate = `
 </div>
 
 </div>
-`
+`;
 export const fileWrittenAlertTemplate = `
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
 <strong>Fichero exportado correctamente</strong>
 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
   <span aria-hidden="true">&times;</span>
 </button>
-</div>`
+</div>`;
 
 export const dataImportedAlertTemplate = `
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -128,4 +128,4 @@ export const dataImportedAlertTemplate = `
 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
   <span aria-hidden="true">&times;</span>
 </button>
-</div>`
+</div>`;
