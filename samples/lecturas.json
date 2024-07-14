@@ -1,0 +1,167 @@
+{
+    "members": [
+        {
+            "name": "Carmen del Auxilio de la O",
+            "id": 1,
+            "orden": 188,
+            "sector": "1 - Tihuapa norte",
+            "caudal_anterior": 358,
+            "caudal_actual": null,
+            "consumo": null,
+            "tarifa_calculada": null,
+            "medidor": "027752",
+            "cambio_medidor": false,
+            "tipo_uso": "Humano"
+        },
+        {
+            "name": "Carlos German Rodríguez",
+            "id": 3,
+            "orden": 182,
+            "sector": "1 - Tihuapa norte",
+            "caudal_anterior": 91,
+            "caudal_actual": null,
+            "consumo": null,
+            "tarifa_calculada": null,
+            "medidor": "8199",
+            "cambio_medidor": false,
+            "tipo_uso": "Humano"
+        },
+        {
+            "name": "Ezequiel Mauricio Garfunquel",
+            "id": 4,
+            "orden": 178,
+            "sector": "2 - Tihuapa norte",
+            "caudal_anterior": 772,
+            "caudal_actual": null,
+            "consumo": null,
+            "tarifa_calculada": null,
+            "medidor": "96695",
+            "cambio_medidor": false,
+            "tipo_uso": "Humano"
+        },
+        {
+            "name": "Oscar Rodrigo Menéndez",
+            "id": 5,
+            "orden": 184,
+            "sector": "2 - Tihuapa norte",
+            "caudal_anterior": 594,
+            "caudal_actual": null,
+            "consumo": null,
+            "tarifa_calculada": null,
+            "medidor": "113388",
+            "cambio_medidor": false,
+            "tipo_uso": "Humano"
+        },
+        {
+            "name": "Juana de la luz",
+            "id": 6,
+            "orden": 195,
+            "sector": "3 - Tihuapa norte",
+            "caudal_anterior": 1327,
+            "caudal_actual": null,
+            "consumo": null,
+            "tarifa_calculada": null,
+            "medidor": "97553",
+            "cambio_medidor": false,
+            "tipo_uso": "Humano"
+        },
+        {
+            "name": "Marta Sara Luna",
+            "id": 7,
+            "orden": 198,
+            "sector": "3 - Tihuapa norte",
+            "caudal_anterior": 1327,
+            "caudal_actual": null,
+            "consumo": null,
+            "tarifa_calculada": null,
+            "medidor": "075337",
+            "cambio_medidor": false,
+            "tipo_uso": "Humano"
+        },
+        {
+            "name": "Lucía Gloria Gonzalez",
+            "id": 8,
+            "orden": 201,
+            "sector": "4 - Tlacuxtli",
+            "caudal_anterior": 282,
+            "caudal_actual": null,
+            "consumo": null,
+            "tarifa_calculada": null,
+            "medidor": "1545",
+            "cambio_medidor": false,
+            "tipo_uso": "Humano"
+        },
+        {
+            "name": "Ramón Giron Claro",
+            "id": 9,
+            "orden": 177,
+            "sector": "4 - Tlacuxtli",
+            "caudal_anterior": 1174,
+            "caudal_actual": null,
+            "consumo": null,
+            "tarifa_calculada": null,
+            "medidor": "97656",
+            "cambio_medidor": false,
+            "tipo_uso": "Humano"
+        },
+        {
+            "name": "Rosa Escobar Romero",
+            "id": 10,
+            "orden": 176,
+            "sector": "5 - Tlacuxtli",
+            "caudal_anterior": 1868,
+            "caudal_actual": null,
+            "consumo": null,
+            "tarifa_calculada": null,
+            "medidor": "12529",
+            "cambio_medidor": false,
+            "tipo_uso": "Humano"
+        },
+        {
+            "name": "Alma Trejo García",
+            "id": 12,
+            "orden": 199,
+            "sector": "5 - Tlacuxtli",
+            "caudal_anterior": 430,
+            "caudal_actual": null,
+            "consumo": null,
+            "tarifa_calculada": null,
+            "medidor": "117696",
+            "cambio_medidor": false,
+            "tipo_uso": "Humano"
+        }
+    ],
+    "meta": {
+        "id": 1,
+        "nuevo_derecho_siguientes_cuotas_opciones": [
+            10.0, 25.0, 50.0, 75.0, 100.0, 150.0
+        ],
+        "humano_tramos": [
+            {"cost": 0.0, "limit": 14.0},
+            {"cost": 0.75, "limit": 20.0},
+            {"cost": 2.0, "limit": 10000}
+        ],
+        "comercial_tramos": [
+            {"cost": 0.0, "limit": 14.0},
+            {"cost": 0.75, "limit": 20.0},
+            {"cost": 2.0, "limit": 10000}
+        ],
+        "name": "Junta de Agua",
+        "payment_method": "BANCO .... Cuenta No: .... ",
+        "payment_csv": false,
+        "payment_due_day": 16,
+        "comision": "0.28",
+        "recargo_mora": "1.00",
+        "asamblea": "2.00",
+        "jornada_trabajo": "2.00",
+        "reconexion": "10.00",
+        "ahorro": "0.25",
+        "traspaso_derecho": "0.00",
+        "humano_cuota_fija": "5.72",
+        "comercial_cuota_fija": "5.72",
+        "humano_nuevo_derecho_total": "300.00",
+        "humano_nuevo_derecho_primera_cuota": "100.00",
+        "comercial_nuevo_derecho_total": "400.00",
+        "comercial_nuevo_derecho_primera_cuota": "150.00"
+    }
+}

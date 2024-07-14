@@ -1,84 +1,67 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-import {Dao} from './dao.js';
-import { MainTemplate } from './mainTemplate.js';
-import { ExportReadings } from './exportReadings.js';
-import { dataImportedAlertTemplate } from './htmlTemplates.js';
+import {MainTemplate} from "./mainTemplate.js";
+import {ExportReadings} from "./exportReadings.js";
+import {dataImportedAlertTemplate} from "./htmlTemplates.js";
 
-import '../www/libs/jquery.min.js';
+import "../www/libs/jquery.min.js";
+import {DeviceRepository} from "./DeviceRepository.js";
+import {DevRepository} from "./DevRepository.js";
 
-'cordova' in window ? document.addEventListener("deviceready", init, false) : init();
+"cordova" in window
+    ? document.addEventListener("deviceready", initDevice, false)
+    : initDev();
 
-function init() {
+function initDevice() {
+    init(DeviceRepository);
+}
+function initDev() {
+    init(DevRepository);
+}
+function init(Repository) {
+    const repository = new Repository();
+    function loadMeta(result) {
+        window.AIGAR = {
+            meta: JSON.parse(result),
+        };
+    }
+    function loadUsersList(result) {
+        const users = JSON.parse(result);
+        const mainTemplate = new MainTemplate("Recorrido", "Todos", users);
+        const usersList = document.getElementById(mainTemplate.getUsersListElement());
+        mainTemplate.fillUsersList(usersList);
+        mainTemplate.setListeners();
 
-  const dao = new Dao();
+        const exportReadings = new ExportReadings();
+        exportReadings.setListeners();
+    }
+    function onFileExists() {
+        repository
+            .onFileExists()
+            .then(function (result) {
+                loadMeta(result[1]);
+                loadUsersList(result[0]);
 
-  /* Workarround: Checking android filesystem permissions
+                document.getElementById("alertsZone").innerHTML =
+                    dataImportedAlertTemplate;
+            })
+            .catch(error => {
+                document.getElementById("alertsZone").innerHTML =
+                    "Error importando lecturas.json";
+            });
+    }
+    function onFileNotExists() {
+        repository
+            .onFileNotExists()
+            .then(function (result) {
+                loadMeta(result[1]);
+                loadUsersList(result[0]);
+                document.getElementById("alertsZone").innerHTML =
+                    dataImportedAlertTemplate;
+            })
+            .catch(error => {
+                document.getElementById("alertsZone").innerHTML =
+                    "Error leyendo datos de bd";
+            });
+    }
 
-  For some reason, cordova file plugin returns an error of file permissions
-  when first action is deleting a file, though user has granted write permissions to the app. 
-  If first action is writing a file, there are no problems with permissions. 
-  Since that moment it's possible delete files as well.
-  */
-  window.resolveLocalFileSystemURL(dao.dataDirectory, function(dir) {
-    dir.getFile("check_write_permissions", {create:true}, function(fileEntry) {
-      fileEntry.remove();
-    }, function(error) {console.log("Error: " + error.code) })
-  })
-
-  window.resolveLocalFileSystemURL(dao.dataDirectory, function(dir) {
-    dir.getFile(dao.importFileName, {create:false}, fileExists, fileNotExists );
-  });
-
-  function fileExists() {
-    dao.getDataFromFile().then(function(result){
-      loadUsersList(result);
-      document.getElementById("alertsZone").innerHTML = dataImportedAlertTemplate;
-    }).catch((error) => {
-      document.getElementById("alertsZone").innerHTML = "Error importando lecturas.json";
-    });
-  }
-
-  function fileNotExists() {
-    dao.getData().then(function(result) {
-      loadUsersList(result);
-    }).catch(error => {
-      document.getElementById("alertsZone").innerHTML = `Error cargado datos<br>${error.toString()}`;
-    })
-  }
-
-  function loadUsersList(result) {
-    dao.getMeta().then((resultMeta) => {
-      window.AIGAR = {
-        "meta": JSON.parse(resultMeta)
-      }
-    }).catch(() => {
-      document.getElementById("alertsZone").innerHTML = "Error leyendo datos";
-    })
-    const users = JSON.parse(result);
-    const mainTemplate = new MainTemplate("Recorrido", "Todos", users);
-    const usersList = document.getElementById(mainTemplate.getUsersListElement());
-    mainTemplate.fillUsersList(usersList);
-    mainTemplate.setListeners();
-
-    const exportReadings = new ExportReadings();
-    exportReadings.setListeners();
-  }
-
+    repository.init(onFileExists, onFileNotExists);
 }
