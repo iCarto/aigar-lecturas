@@ -107,7 +107,13 @@ export class MainTemplate {
     _filterUserBySearch() {
         const value = $("#findUser").val().toLowerCase();
         $("#usersList li").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            const textForSearching = $(this)
+                .text()
+                .toLowerCase()
+                .replace("Nº socio:", "")
+                .replace("Medidor:", "");
+            const show = textForSearching.includes(value);
+            $(this).toggle(show);
         });
     }
 
