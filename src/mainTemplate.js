@@ -70,13 +70,11 @@ export class MainTemplate {
             li.setAttribute("id", this._users[i]["id"]);
 
             documentFragment.appendChild(li);
-            var userName = document.createElement("h4");
-            userName.setAttribute("id", this._users[i]["id"]);
-            userName.textContent = this._users[i]["name"];
-            li.appendChild(userName);
-            li.appendChild(
-                document.createTextNode("Nº socio: " + this._users[i]["id"])
-            );
+
+            const memberName = this._users[i]["name"];
+            const memberId = this._users[i]["id"];
+            const memberCounter = this._users[i]["medidor"];
+            li.innerHTML = `<h4 id="${this._users[i]["id"]}">${memberName}</h4><span class="float-left">Nº socio: ${memberId}</span><span class="float-right">Medidor: ${memberCounter}</span>`;
             li.classList.add("list-group-item");
             element.appendChild(li);
         }
