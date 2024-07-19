@@ -14,25 +14,16 @@ export class Dao {
         const dataPromise = new Promise((resolve, reject) => {
             this.db.executeSql("SELECT * FROM users", [], function (rs) {
                 const result = rs.rows.item(0).dataJSON;
-                resolve(result);
+                resolve(JSON.parse(result));
             });
         });
         const metaPromise = new Promise((resolve, reject) => {
             this.db.executeSql("SELECT * FROM meta", [], function (rs) {
                 const result = rs.rows.item(0).dataJSON;
-                resolve(result);
+                resolve(JSON.parse(result));
             });
         });
-        return Promise.all(dataPromise, metaPromise);
-    }
-
-    getMeta() {
-        return new Promise((resolve, reject) => {
-            this.db.executeSql("SELECT * FROM meta", [], function (rs) {
-                const result = rs.rows.item(0).dataJSON;
-                resolve(result);
-            });
-        });
+        return Promise.all([dataPromise, metaPromise]);
     }
 
     setData(dataJson) {
@@ -61,7 +52,8 @@ export class Dao {
                         logOb.createWriter(
                             function (fileWriter) {
                                 fileWriter.seek(fileWriter.length);
-                                var blob = new Blob([data], {type: "text/plain"});
+                                const dataStr = JSON.stringify(data);
+                                var blob = new Blob([dataStr], {type: "text/plain"});
                                 fileWriter.truncate(0);
                                 fileWriter.write(blob);
                                 resolve(() => {

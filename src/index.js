@@ -18,48 +18,51 @@ function initDev() {
 }
 function init(Repository) {
     const repository = new Repository();
+
     function loadMeta(result) {
         window.AIGAR = {
-            meta: JSON.parse(result),
+            meta: result,
         };
     }
-    function loadUsersList(result) {
-        const users = JSON.parse(result);
-        const mainTemplate = new MainTemplate("Recorrido", "Todos", users);
-        const usersList = document.getElementById(mainTemplate.getUsersListElement());
-        mainTemplate.fillUsersList(usersList);
-        mainTemplate.setListeners();
-
-        const exportReadings = new ExportReadings();
-        exportReadings.setListeners();
+    function loadMainTemplate(users, meta) {
+        const mainTemplate = new MainTemplate(repository, users, meta);
+        const exportReadings = new ExportReadings(mainTemplate);
     }
+
     function onFileExists() {
+        const successMsg = dataImportedAlertTemplate;
+        const errorMsg = "Error importando lecturas.json";
+
         repository
-            .onFileExists()
+            .fileExists()
             .then(function (result) {
                 loadMeta(result[1]);
-                loadUsersList(result[0]);
-
-                document.getElementById("alertsZone").innerHTML =
-                    dataImportedAlertTemplate;
+                loadMainTemplate(result[0], result[1]);
+                if (!!successMsg) {
+                    document.getElementById("alertsZone").innerHTML = successMsg;
+                }
             })
             .catch(error => {
-                document.getElementById("alertsZone").innerHTML =
-                    "Error importando lecturas.json";
+                console.log(error);
+                document.getElementById("alertsZone").innerHTML = errorMsg;
             });
     }
     function onFileNotExists() {
+        const successMsg = "";
+        const errorMsg = "Error leyendo datos de bd";
+
         repository
-            .onFileNotExists()
+            .fileNotExists()
             .then(function (result) {
                 loadMeta(result[1]);
-                loadUsersList(result[0]);
-                document.getElementById("alertsZone").innerHTML =
-                    dataImportedAlertTemplate;
+                loadMainTemplate(result[0]);
+                if (!!successMsg) {
+                    document.getElementById("alertsZone").innerHTML = successMsg;
+                }
             })
             .catch(error => {
-                document.getElementById("alertsZone").innerHTML =
-                    "Error leyendo datos de bd";
+                console.log(error);
+                document.getElementById("alertsZone").innerHTML = errorMsg;
             });
     }
 

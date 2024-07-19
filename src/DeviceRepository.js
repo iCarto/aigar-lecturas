@@ -20,7 +20,7 @@ export class DeviceRepository {
         If first action is writing a file, there are no problems with permissions. 
         Since that moment it's possible delete files as well.
         */
-        window.resolveLocalFileSystemURL(dao.dataDirectory, function (dir) {
+        window.resolveLocalFileSystemURL(this.dao.dataDirectory, function (dir) {
             dir.getFile(
                 "check_write_permissions",
                 {create: true},
@@ -35,7 +35,7 @@ export class DeviceRepository {
             );
         });
 
-        window.resolveLocalFileSystemURL(this.dao.dataDirectory, function (dir) {
+        window.resolveLocalFileSystemURL(this.dao.dataDirectory, dir => {
             dir.getFile(
                 this.dao.importFileName,
                 {create: false},
@@ -43,5 +43,13 @@ export class DeviceRepository {
                 onFileNotExists
             );
         });
+    }
+
+    setData(dataJson) {
+        this.dao.setData(dataJson);
+    }
+
+    writeDataToFile(data, filename) {
+        return this.dao.writeDataToFile(data, filename);
     }
 }

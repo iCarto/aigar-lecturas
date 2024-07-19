@@ -1,44 +1,18 @@
-import {usersListTemplate} from "./htmlTemplates.js";
 import {ReadingTemplate} from "./readingTemplate.js";
 
 export class MainTemplate {
-    constructor(order, sector, users) {
-        this._order = order;
-        this._sector = sector;
+    constructor(repository, users, meta) {
         this._initialUsers = users;
         this._users = users;
+        this._meta = meta;
+        this.repository = repository;
 
-        document.getElementById("mainScreen").innerHTML = usersListTemplate;
-        this._initializeWidgets();
-        this._initializeUsersListByFilters();
-    }
+        this._initializeSectorWidget();
 
-    get order() {
-        return this._order;
-    }
-
-    set order(newOrder) {
-        this._order = newOrder;
-    }
-
-    get sector() {
-        return this._sector;
-    }
-
-    set sector(newSector) {
-        this._sector = newSector;
-    }
-
-    get users() {
-        return this._users;
-    }
-
-    set users(newUsers) {
-        this._users = newUsers;
-    }
-
-    getUsersListElement() {
-        return "usersList";
+        this._filterByOptions();
+        this.setListeners();
+        this.readingTemplate = new ReadingTemplate(this, this.repository);
+        this.readingTemplate.toggle(false);
     }
 
     setListeners() {
@@ -46,44 +20,56 @@ export class MainTemplate {
 
         $("#orderButtons button").on("click", event => {
             $(event.target).addClass("active").siblings().removeClass("active");
-            this._order = $(event.target).text();
-            this._users = this._filterByOptions();
-            this.fillUsersList(document.getElementById(this.getUsersListElement()));
-            this._callReadingTemplateListener();
+            this._filterByOptions();
         });
 
         $("#sector").on("change", () => {
-            this._sector = $("#sector").val();
-            this._users = this._filterByOptions();
-            this.fillUsersList(document.getElementById(this.getUsersListElement()));
-            this._callReadingTemplateListener();
+            this._filterByOptions();
         });
 
-        this._callReadingTemplateListener();
+        $("#onlyNotReaded").on("change", () => {
+            this._filterByOptions();
+        });
+
+        document.getElementById("usersList").addEventListener("click", event => {
+            const liElement = event.target.closest("li");
+            const userID = parseInt(liElement.dataset.userid);
+            this.readingTemplate.showUser(userID);
+        });
+        document.getElementById("navigateHome").addEventListener("click", event => {
+            this.readingTemplate.toggle(false);
+        });
     }
 
-    fillUsersList(element) {
-        element.innerHTML = "";
-        for (var i = 0; i < this._users.length; i++) {
-            var documentFragment = document.createDocumentFragment();
-            var li = document.createElement("li");
-            li.setAttribute("id", this._users[i]["id"]);
+    _createElement(str) {
+        var frag = document.createDocumentFragment();
 
-            documentFragment.appendChild(li);
+        var elem = document.createElement("div");
+        elem.innerHTML = str;
 
-            const memberName = this._users[i]["name"];
-            const memberId = this._users[i]["id"];
-            const memberCounter = this._users[i]["medidor"];
-            li.innerHTML = `<h4 id="${this._users[i]["id"]}">${memberName}</h4><span class="float-left">Nº socio: ${memberId}</span><span class="float-right">Medidor: ${memberCounter}</span>`;
-            li.classList.add("list-group-item");
-            element.appendChild(li);
+        while (elem.childNodes[0]) {
+            frag.appendChild(elem.childNodes[0]);
         }
+        return frag;
     }
 
-    _initializeWidgets() {
-        this._initializeSectorWidget();
-        document.getElementById(this._order).classList.add("active");
-        $("#sector").val(this._sector);
+    fillUsersList() {
+        const element = document.getElementById("usersList");
+
+        const liStr = this._users.map(user => {
+            const memberName = user["name"];
+            const memberId = user["id"];
+            const memberCounter = user["medidor"];
+            return `
+            <li data-userid="${memberId}" class="list-group-item">
+            <h4>${memberName}</h4>
+            <span class="float-left">Nº socio: ${memberId}</span>
+            <span class="float-right">Medidor: ${memberCounter}</span>
+            </li>
+            `;
+        });
+        element.innerHTML = liStr.join("");
+        this._filterUserBySearch();
     }
 
     _initializeSectorWidget() {
@@ -95,50 +81,59 @@ export class MainTemplate {
             sector => `<option value="${sector}">${sector}</option>`
         );
         options.sort();
-        options.unshift('<option value="Todos">Todos</option>');
+        options.unshift(
+            '<option value="Todos los sectores">Todos los sectores</option>'
+        );
         document.getElementById("sector").innerHTML = options;
     }
 
-    _initializeUsersListByFilters() {
-        this._users = this._filterByOptions();
-        this.fillUsersList(document.getElementById(this.getUsersListElement()));
-    }
-
     _filterUserBySearch() {
-        const value = $("#findUser").val().toLowerCase();
-        $("#usersList li").filter(function () {
-            const textForSearching = $(this)
-                .text()
-                .toLowerCase()
-                .replace("Nº socio:", "")
-                .replace("Medidor:", "");
-            const show = textForSearching.includes(value);
-            $(this).toggle(show);
-        });
+        const value = $("#findUser").val().toLowerCase().trim();
+        if (!!value) {
+            $("#usersList li").each(function (i, obj) {
+                const textForSearching = $(this)
+                    .text()
+                    .toLowerCase()
+                    .replace("nº socio:", "")
+                    .replace("medidor:", "")
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+                const mustBeShown = textForSearching.includes(value);
+                $(obj).toggle(mustBeShown);
+            });
+        } else {
+            $("#usersList li").each(function (i, obj) {
+                $(obj).toggle(true);
+            });
+        }
     }
 
     _filterByOptions() {
-        this._users = this._initialUsers;
-        if (this._order === "Alfabético") {
-            this._users.sort(function (a, b) {
+        const order = $("#orderButtons button.active").text();
+        const sector = $("#sector").val();
+        const showOnlyNotReaded = document.getElementById("onlyNotReaded").checked;
+
+        let filteredUsers = [...this._initialUsers];
+        if (order === "Alfabético") {
+            filteredUsers.sort(function (a, b) {
                 return a.name.localeCompare(b.name);
             });
         } else {
-            this._users.sort(function (a, b) {
+            filteredUsers.sort(function (a, b) {
                 return a.orden - b.orden;
             });
         }
 
-        if (this._sector === "Todos") {
-            return this._users;
-        } else {
-            return this._users.filter(user => user.sector == this._sector);
+        if (sector !== "Todos los sectores") {
+            filteredUsers = filteredUsers.filter(user => user.sector == sector);
         }
-    }
+        if (showOnlyNotReaded) {
+            filteredUsers = filteredUsers.filter(user => !!!user.caudal_actual);
+        }
 
-    _callReadingTemplateListener() {
-        $("#usersList li").on("click", event => {
-            new ReadingTemplate(this, event.target.id);
-        });
+        this._users = filteredUsers;
+
+        this.fillUsersList();
     }
 }

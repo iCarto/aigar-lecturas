@@ -3,7 +3,7 @@ const data = {
         {
             name: "Carmen del Auxilio de la O",
             id: 1,
-            orden: 188,
+            orden: 145,
             sector: "1 - Tihuapa norte",
             caudal_anterior: 358,
             caudal_actual: null,
@@ -15,8 +15,8 @@ const data = {
         },
         {
             name: "Carlos German Rodríguez",
-            id: 3,
-            orden: 182,
+            id: 2,
+            orden: 150,
             sector: "1 - Tihuapa norte",
             caudal_anterior: 91,
             caudal_actual: null,
@@ -28,8 +28,8 @@ const data = {
         },
         {
             name: "Ezequiel Mauricio Garfunquel",
-            id: 4,
-            orden: 178,
+            id: 3,
+            orden: 140,
             sector: "2 - Tihuapa norte",
             caudal_anterior: 772,
             caudal_actual: null,
@@ -41,8 +41,8 @@ const data = {
         },
         {
             name: "Oscar Rodrigo Menéndez",
-            id: 5,
-            orden: 184,
+            id: 4,
+            orden: 130,
             sector: "2 - Tihuapa norte",
             caudal_anterior: 594,
             caudal_actual: null,
@@ -55,7 +55,7 @@ const data = {
         {
             name: "Juana de la luz",
             id: 6,
-            orden: 195,
+            orden: 75,
             sector: "3 - Tihuapa norte",
             caudal_anterior: 1327,
             caudal_actual: null,
@@ -68,7 +68,7 @@ const data = {
         {
             name: "Marta Sara Luna",
             id: 7,
-            orden: 198,
+            orden: 110,
             sector: "3 - Tihuapa norte",
             caudal_anterior: 1327,
             caudal_actual: null,
@@ -81,7 +81,7 @@ const data = {
         {
             name: "Lucía Gloria Gonzalez",
             id: 8,
-            orden: 201,
+            orden: 100,
             sector: "4 - Tlacuxtli",
             caudal_anterior: 282,
             caudal_actual: null,
@@ -94,7 +94,7 @@ const data = {
         {
             name: "Ramón Giron Claro",
             id: 9,
-            orden: 177,
+            orden: 90,
             sector: "4 - Tlacuxtli",
             caudal_anterior: 1174,
             caudal_actual: null,
@@ -107,7 +107,7 @@ const data = {
         {
             name: "Rosa Escobar Romero",
             id: 10,
-            orden: 176,
+            orden: 80,
             sector: "5 - Tlacuxtli",
             caudal_anterior: 1868,
             caudal_actual: null,
@@ -120,7 +120,7 @@ const data = {
         {
             name: "Alma Trejo García",
             id: 12,
-            orden: 199,
+            orden: 70,
             sector: "5 - Tlacuxtli",
             caudal_anterior: 430,
             caudal_actual: null,
@@ -166,15 +166,20 @@ const data = {
     },
 };
 export class DevRepository {
-    onFileExists() {
-        const members = JSON.stringify(data.members);
-        const meta = JSON.stringify(data.meta);
-        return Promise.resolve([members, meta]);
+    fileExists() {
+        return Promise.resolve([data.members, data.meta]);
     }
-    onFileNotExists() {
-        return this.onFileExists();
+    fileNotExists() {
+        return this.fileExists();
     }
     init(onFileExists, onFileNotExists) {
         onFileExists();
+    }
+    setData(dataJson) {
+        console.log(dataJson);
+    }
+    writeDataToFile(data, filename) {
+        console.log(data);
+        console.log(filename);
     }
 }
