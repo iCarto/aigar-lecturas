@@ -176,6 +176,9 @@ export class ReadingTemplate {
     updateUser(data) {
         const user = this._getUserFromID();
         for (let [key, value] of Object.entries(data)) {
+            if (key === "caudal_anterior") {
+                user.caudal_anterior_org = user.caudal_anterior_org == null ? user.caudal_anterior: user.caudal_anterior_org;
+            }
             user[key] = value;
         }
 
