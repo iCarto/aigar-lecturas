@@ -54,6 +54,11 @@ export class ReadingTemplate {
             }
             this._showUser(this._mainTemplate._users[index + 1]["id"]);
         });
+        
+        $("#medidorButtonCancelar").on("click", () => {
+            const index = this._getUserCurrentIdx();
+            this._showUser(this._mainTemplate._users[index]["id"]);
+        });
     }
 
     _getUserFromID() {
@@ -70,7 +75,14 @@ export class ReadingTemplate {
     _addUserDataToTemplate() {
         const user = this._getUserFromID();
         document.getElementById("name").innerHTML = "<h4>" + user["name"] + "</h4>";
-        document.getElementById("medidorTextField").value = user["medidor"];
+        
+        const medidorTextField = document.getElementById("medidorTextField");
+        medidorTextField.value = user["medidor"];
+        medidorTextField.setAttribute("readonly", true);
+        document.getElementById("medidorButton").innerText = "Cambiar";
+
+        document.getElementById("medidorButtonCancelarParent").classList.add("d-none");
+        
         document.getElementById("caudal_anterior").innerHTML = user["caudal_anterior"];
         document.getElementById("caudal_actual").value = user["caudal_actual"];
         document.getElementById("consumo").innerHTML = user["consumo"];
@@ -78,15 +90,17 @@ export class ReadingTemplate {
             user["tarifa_calculada"];
 
         document.getElementById("caudal_actual").focus();
+        
     }
 
-    _setNewReading() {
+    _setNewReading(extraData = {}) {
         const consumo = this._calculateConsumo();
         const tarifa = this._calculateTarifa();
         this.updateUser({
             caudal_actual: parseInt(document.getElementById("caudal_actual").value),
             consumo: consumo,
             tarifa_calculada: tarifa,
+            ...extraData,
         });
 
         document.getElementById("consumo").innerHTML = consumo || "";
@@ -139,16 +153,25 @@ export class ReadingTemplate {
             button.innerText = "Guardar";
             input.removeAttribute("readonly");
             input.focus();
+            document.getElementById("caudal_anterior").innerHTML = 0;
+            document.getElementById("consumo").innerHTML = this._calculateConsumo() || "";
+            document.getElementById("tarifa_calculada").innerHTML = this._calculateTarifa() || "";
+            
+            document.getElementById("medidorButtonCancelarParent").classList.remove("d-none");
+            
+            
         } else if (button.innerText === "Guardar") {
-            this.updateUser({
+            this._setNewReading({
                 medidor: document.getElementById("medidorTextField").value,
+                caudal_anterior: 0,
                 cambio_medidor: true,
-            });
-
+            })
             button.innerText = "Cambiar";
             input.readOnly = true;
+            document.getElementById("medidorButtonCancelarParent").classList.add("d-none");
         }
     }
+
 
     updateUser(data) {
         const user = this._getUserFromID();
