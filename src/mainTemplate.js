@@ -129,7 +129,9 @@ export class MainTemplate {
             filteredUsers = filteredUsers.filter(user => user.sector == sector);
         }
         if (showOnlyNotReaded) {
-            filteredUsers = filteredUsers.filter(user => !!!user.caudal_actual);
+            filteredUsers = filteredUsers.filter(
+                user => user.caudal_actual == null || user.caudal_actual === ""
+            );
         }
 
         this._users = filteredUsers;
