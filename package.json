@@ -1,7 +1,7 @@
 {
     "name": "es.icarto.aigarlecturas",
     "displayName": "AIGAR-Lecturas",
-    "version": "24.9.9",
+    "version": "25.03.03",
     "description": "AIGAR: Aplicación de lectura de consumos de agua en las Juntas de Agua",
     "main": "index.js",
     "scripts": {
