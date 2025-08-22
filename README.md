@@ -1,22 +1,20 @@
-AIGAR: Aplicación Innovadora para la Gestión de Juntas de Aguas Rurales
+# AIGAR: Aplicación Innovadora para la Gestión de Juntas de Aguas Rurales
 
-AIGAR es una aplicación desarrollada por [iCarto](https://icarto.es/) en colaboración con [Ingeniería Sin Fronteras Cataluña](https://esf-cat.org/) y [ACUA](http://acua.org.sv/).
+La Aplicación Innovadora para la Gestión de Agua Rural (AIGAR) es una aplicación desarrollada por [iCarto](https://icarto.es/) en colaboración con [Ingeniería Sin Fronteras Cataluña](https://esf-cat.org/), [ACUA](http://acua.org.sv/) y ASAPS. AIGAR ha sido financiada a través de diferentes proyectos con el apoyo de la AGENCIA ESPAÑOLA DE COOPERACIÓN INTERNACIONAL PARA EL DESARROLLO ([AECID](https://www.aecid.es)) y la [Xunta de Galicia](https://cooperacion.xunta.gal/es).
 
-AIGAR está financiado por la AGENCIA ESPAÑOLA DE COOPERACIÓN INTERNACIONAL PARA EL DESARROLLO, [AECID](https://www.aecid.es), a través del proyecto “Aplicación de soluciones integrales e innovadoras para la sostenibilidad y buena gestión de los sistemas comunitarios de agua en El Salvador”, presentado a la convocatoria de Acciones de Cooperación Para el Desarrollo correspondiente al año 2018 para la Realización de Proyectos de Innovación para el Desarrollo.
+AIGAR es una herramienta diseñada a medida para mejorar la competencia administrativa y organizativa de las Juntas Administradoras de los sistemas de Agua Potable y Saneamiento rurales (Juntas de agua).
 
-![splash](docs/splash.png)
+Está compuesta por dos aplicaciones libres (licencia AGPL) y gratuitas:
 
-Este repositorio contiene la aplicación móvil (desarrollada con tecnologías web y empaquetada para Android con Apache Cordova) denominada AIGAR-Lecturas. AIGAR-Lecturas permite al personal de Juntas de Agua de comunidades rurales realizar la lectura de los medidores instalados en las viviendas de los asociados.
+-   **AIGAR-Lecturas**: Aplicación móvil que permite la recolección de los datos de consumo de agua de los socios y socias del sistema de agua. [Repositorio](https://github.com/iCarto/aigar-lecturas).
+-   **AIGAR-Escritorio**: Aplicación web que permite la gestión administrativa del sistema de agua. Incluye la gestión del catastro de personas socias del sistema y todo el proceso de facturación. [Repositorio](https://github.com/iCarto/aigar).
 
-La aplicación en este momento está muy ligada a la forma de trabajo de ASCATLI la Junta de Agua que se ha escogido como piloto para este proyecto. El sistema de agua que administra ASCATLI tiene alrededor de 250 socias y comprende las comunidades de Tihuapa Norte y Tlacuxtli, en el municipio del Puerto de la Libertad en El Salvador.
+![splash](docs/splash_sin_logos.png)
 
-Puedes descargar y probar la aplicación desde el [apartado de relases](https://gitlab.com/icarto/aigar/-/relases). Llega con descomprimir el zip y hacer doble click en el fichero `AIGAR.exe`. La aplicación contiene una base de datos vacía.
+Este repositorio contiene la aplicación móvil **AIGAR-Lecturas**. Está desarrollada con tecnologías web y empaquetada para Android con Apache Cordova. La aplicación permite al personal de Juntas de Agua realizar la lectura de los medidores/contadores instalados en las viviendas de los asociados en el orden que la persona fontanera realiza la toma de lecturas. Contiene la información de todos los socio/as del sistema: nombre, número de socio/a, número de contador y consumo anterior.
 
-La [aplicación móvil](https://gitlab.com/icarto/aigar) se complementa con la [aplicación de escritorio AIGAR](https://gitlab.com/icarto/aigar-lecturas), que a partir de estas lecturas recogidas, permite gestionar el resto de proceso de facturación. 
+Para más información puedes consultar la [página web de AIGAR](https://icarto.github.io/aigar-web/) o puedes escribir a iCarto,  ACUA o ASAPS para consultar la metodología de implementación, buenas prácticas, posibles problemas o lo que necesites.
 
-Ambas aplicaciones son libres (licencias GPL y AGPL) y gratuitas.
-
-Si eres una ONG y estás planteándote usar algo similar en tu proyecto puedes escribir a [iCarto](https://icarto.es/contacta/), [ISF-Cataluña](https://esf-cat.org/es/contacta/) o [ACUA](http://acua.org.sv/index.php/contactenos) para hablar sobre la identificación del proyecto, buenas prácticas, posibles problemas o lo que necesites.
 
 # Capturas
 
